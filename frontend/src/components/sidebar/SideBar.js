@@ -33,21 +33,21 @@ class SideBar extends React.Component {
             <p className="ml-3">Menus</p>
 
             <Nav.Item>
-              <Nav.Link href="/">
+              <Nav.Link href="/Dashboard">
                 <FontAwesomeIcon icon={faTable} className="mr-2" />
                 Dashboard
               </Nav.Link>
             </Nav.Item>
 
             <Nav.Item>
-              <Nav.Link href="/">
+              <Nav.Link href="/Inventory">
                 <FontAwesomeIcon icon={faWarehouse} className="mr-2" />
                 Inventory
               </Nav.Link>
             </Nav.Item>
 
             <Nav.Item>
-              <Nav.Link href="/">
+              <Nav.Link href="/Order">
                 <FontAwesomeIcon icon={faTruck} className="mr-2" />
                 Create Order
               </Nav.Link>
@@ -63,14 +63,14 @@ class SideBar extends React.Component {
         <div id="bot-nav-items">
           <Nav className="flex-column pt-2">
             <Nav.Item>
-              <Nav.Link href="/">
+              <Nav.Link href="/FAQ">
                 <FontAwesomeIcon icon={faQuestion} className="mr-2" />
                 FAQ
               </Nav.Link>
             </Nav.Item>
 
             <Nav.Item>
-              <Nav.Link href="/">
+              <Nav.Link href="/Contact">
                 <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
                 Contact
               </Nav.Link>

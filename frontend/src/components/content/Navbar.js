@@ -1,7 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAlignLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Navbar, Button, Nav } from "react-bootstrap";
+
 
 class NavBar extends React.Component {
   render() {
@@ -17,10 +18,8 @@ class NavBar extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto" navbar>
-            <Nav.Link href="#">page</Nav.Link>
-            <Nav.Link href="#">page</Nav.Link>
-            <Nav.Link href="#">page</Nav.Link>
-            <Nav.Link href="#">page</Nav.Link>
+            <Nav.Link href="#"><FontAwesomeIcon icon={faUser} /> Account</Nav.Link>
+            <Nav.Link href="#">Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

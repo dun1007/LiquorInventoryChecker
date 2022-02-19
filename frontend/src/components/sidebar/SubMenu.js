@@ -44,10 +44,9 @@ class SubMenu extends React.Component {
             <nav className="nav flex-column">
               {items.map(item => (
                 <a
-                  className={`nav-link nav-item pl-5 ${
-                    item === "Active" ? "active" : ""
-                  } `}
-                  href="/"
+                  className={`nav-link nav-item pl-5 
+                  ${item === "Active" ? "active" : ""}`}
+                  href={item}
                   key={item}
                 >
                   {item}

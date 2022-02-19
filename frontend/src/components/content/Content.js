@@ -2,6 +2,16 @@ import React from "react";
 import classNames from "classnames";
 import { Container } from "react-bootstrap";
 import NavBar from "./Navbar";
+import Error from "./Error";
+import Inventory from "./Inventory";
+import Order from "./Order";
+import Dashboard from "./Dashboard";
+import Sales from "./Sales";
+import Employees from "./Employees";
+import FAQ from "./FAQ";
+import Contact from "./Contact";
+
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 class Content extends React.Component {
   render() {
@@ -11,7 +21,20 @@ class Content extends React.Component {
         className={classNames("content", { "is-open": this.props.isOpen })}
       >
         <NavBar toggle={this.props.toggle} />
+        <Router>
+          <Routes>
+            <Route path="/Dashboard" element={<Dashboard />}/>
+            <Route path="/Inventory" element={<Inventory />}/>
+            <Route path="/Order" element={<Order />}/>
+            <Route path="/Sales" element={<Sales />}/>
+            <Route path="/Employees" element={<Employees />}/>
+            <Route path="/FAQ" element={<FAQ />}/>
+            <Route path="/Contact" element={<Contact />}/>
+            <Route path="*" element={<Error />}/>
+          </Routes>
+        </Router>
       </Container>
+
     );
   }
 }
