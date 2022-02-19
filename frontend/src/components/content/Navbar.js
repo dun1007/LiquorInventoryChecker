@@ -18,8 +18,8 @@ class NavBar extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto" navbar>
-            <Nav.Link href="#"><FontAwesomeIcon icon={faUser} /> Account</Nav.Link>
-            <Nav.Link href="#">Logout</Nav.Link>
+            <Nav.Link href="/Account"><FontAwesomeIcon icon={faUser} /> Account</Nav.Link>
+            <Nav.Link href="/Logout">Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
