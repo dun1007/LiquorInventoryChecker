@@ -1,53 +1,151 @@
 .App {
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
 }
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import "https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,500,600,700";
+
 
 body {
-    margin: 0;
-    padding: 0;
+  /*font-family: 'Poppins', sans-serif;*/
+  font-family: 'Nunito Sans', sans-serif;
+  /*background: #fafafa;*/
+  background-color: #f5f9fc;
 }
 
-.Sidebar {
-    height: 100%;
-    width: 250px;
-    background-color: #2F4050;
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s;
 }
 
-.SidebarList {
-    height: auto;
-    padding: 0;
-    width: 100%;
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  background: #354052;
+  color: #adb5bd;
+  margin-left: -250px;
+  transition: all 0.5s;
 }
 
-.SidebarList .row {
-    width: 100%;
-    height: 75px;
-    list-style-type: none;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+.sidebar.is-open {
+  margin-left: 0;
+  transition: .5s;
 }
 
-.SidebarList .row:hover {
-    cursor: pointer;
-    background-color: #293846;
+
+.sidebar-header {
+  background: #313b4c;
+  color: #adb5bd;
 }
 
-.SidebarList #active {
-    background-color: white;
-    color: black;
-}
-.row #icon {
-    display: flex;
-    flex: 30%;
-    justify-content: center;
+.sidebar-header h3{
+  color: #fff;
+  padding: 1em;
 }
 
-.row #title {
-    flex: 70%;
+.sidebar ul p {
+  color: #fff;
+  padding: 10px;
 }
+
+.collapse.show, 
+.collapsing {
+  background: #313b4c;
+}
+
+.nav-item {
+  /*color: #ced4da;*/
+  color: #adb5bd;
+  font-weight: 300;
+}
+
+.nav-item.open {
+  color: #e9ecef;
+  background: #313b4c;
+}
+
+.nav-item.active {
+  color: #e9ecef;
+  background: #2d3646 !important;
+}
+
+.nav-item:hover {
+  background: #313b4c;
+  color: #fff;
+  transition: .2s;
+}
+
+
+.nav-item .svg-inline--fa {
+  color: inherit;
+}
+
+li a.dropdown-toggle::after {
+  display: inline-flex;
+  position: relative;
+  left: 60%;
+  top: 10%
+}
+
+.sidebar-header > button {
+  position: relative;
+  float: right;
+  margin: .5em;
+  font-size: 2rem;
+  cursor: pointer;
+  display: none;
+}
+
+#bot-nav-items {
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+.content {
+  padding: 20px;
+  margin-left: 0;
+  height: 100vh;
+}
+
+@media only screen and (max-width: 575.98px) {
+  body {
+    overflow:  hidden;
+  }
+  
+  .content.is-open {
+    /*margin-left: 100%;*/
+    display: none;
+    transition: all 0.5s;
+  }
+  
+  .sidebar.is-open {
+    min-width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    transition: all 0.5s, height 0s;
+    height: 100vh !important;
+  }
+  
+  .sidebar.is-open > .sidebar-header button {
+    display: block;
+  }
+  
+  li a.dropdown-toggle::after {
+    display: inline-block;
+    position: relative;
+    left: 68%;
+  }
+  
+}
+
+
