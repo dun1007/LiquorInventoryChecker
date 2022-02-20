@@ -7,7 +7,8 @@ import {
   faCopy,
   faTable,
   faWarehouse,
-  faTruck
+  faTruck,
+  faAlignRight
 } from "@fortawesome/free-solid-svg-icons";
 import SubMenu from "./SubMenu";
 import { Nav, Button, Container } from "react-bootstrap";
@@ -24,6 +25,7 @@ class SideBar extends React.Component {
             style={{ color: "#fff" }}
             className="mt-4"
           >
+            <FontAwesomeIcon icon={faAlignRight} className="mr-2" />
           </Button>
           <div><h3>Stockify</h3></div>
         </div>
