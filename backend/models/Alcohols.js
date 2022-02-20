@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const AlcohoSchema = new mongoose.Schema({
+const AlcoholSchema = new mongoose.Schema({
     name: { //Full name of product
         type: String,
         required: true,
@@ -17,8 +17,12 @@ const AlcohoSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    packaging: {
+        type: String,
+        required: true,
+    },
     
 });
 
-const AlcoholModel = mongoose.model("alcohols", AlcohoSchema);
+const AlcoholModel = mongoose.model("alcohols", AlcoholSchema);
 module.exports = AlcoholModel;
