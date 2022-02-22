@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Inventory() {
-
+  //Values of item
   const [listOfAlcohols, setListofAlcohols] = useState([]);
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -19,6 +19,7 @@ function Inventory() {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [netInventoryValue, setNetInventoryValue] = useState(0);
+  //Add, Delete, Edit Modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -32,14 +33,14 @@ function Inventory() {
 
   //fires instantly as page loads
   useEffect(() => {
-    Axios.get("http://localhost:3001/getAlcohols").then((response) => {
+    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
       setListofAlcohols(response.data);
       recalculateInventoryNetWorth();
     });
   }, []);
 
   const addItem = () => {
-    Axios.post("http://localhost:3001/addAlcohol", {
+    Axios.post("http://localhost:5000/api/alcohols", {
         name: name,
         type: type,
         volume: volume,
@@ -68,7 +69,7 @@ function Inventory() {
   }
 
   const editItem = () => {
-    Axios.put("http://localhost:3001/updateAlcohol", {
+    Axios.put(`http://localhost:5000/api/alcohols/${currentItemID}`, {
         id: currentItemID,
         name: name,
         type: type,
@@ -97,7 +98,7 @@ function Inventory() {
   }
 
   const removeItem = () => {
-    Axios.delete(`http://localhost:3001/deleteAlcohol/${currentItemID}`).then(()=> {
+    Axios.delete(`http://localhost:5000/api/alcohols/${currentItemID}`).then(()=> {
       setListofAlcohols(listOfAlcohols.filter((item)=> {
         return item._id != currentItemID;
       }));
@@ -106,13 +107,13 @@ function Inventory() {
   }
 
   const updateInventoryList = (value) => {
-    Axios.get("http://localhost:3001/getAlcohols").then((response) => {
+    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
     setListofAlcohols(response.data.filter(item => item.name.includes(value)));
     });
   }
 
   const recalculateInventoryNetWorth = () => {
-    Axios.get("http://localhost:3001/getAlcohols").then((response) => {
+    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
       const newNetWorth = response.data.reduce((prev, next) => prev + next.price*next.quantity,0);
       setNetInventoryValue(newNetWorth);
     });

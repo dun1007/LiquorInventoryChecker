@@ -1,6 +1,7 @@
-
 *.cmd
 backend/node_modules/
 frontend/node_modules/
 node_modules/
 backend/.env
+package-lock.json
+*.json

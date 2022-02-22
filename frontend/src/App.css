@@ -121,6 +121,18 @@ li a.dropdown-toggle::after {
   float: right;
 }
 
+.sales-container {
+  display: flex;
+}
+.sales-display {
+  width: 50%;
+  padding: 5px;
+}
+
+.quantity-sold-input {
+  width: 50px;
+}
+
 @media only screen and (max-width: 575.98px) {
   .content.is-open {
     /*margin-left: 100%;*/
@@ -145,7 +157,6 @@ li a.dropdown-toggle::after {
     position: relative;
     left: 68%;
   }
-  
 }
 
 

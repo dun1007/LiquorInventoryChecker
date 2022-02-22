@@ -51,7 +51,7 @@ class SideBar extends React.Component {
             <Nav.Item>
               <Nav.Link href="/Order">
                 <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                Create Order
+                Manage Order
               </Nav.Link>
             </Nav.Item>
 
