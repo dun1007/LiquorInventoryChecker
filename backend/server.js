@@ -12,7 +12,10 @@ app.use(express.json());
 app.use(cors());
 
 
-app.use('/api/alcohols', require('./routes/alcoholRoutes'))
+//app.use('/api/items', require('./routes/itemRoutes'))
+app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/inventory', require('./routes/inventoryRoutes'))
+
 
 app.use(errorHandler)
 

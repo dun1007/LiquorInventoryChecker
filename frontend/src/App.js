@@ -5,7 +5,6 @@ import SideBar from "./components/sidebar/SideBar";
 import Content from "./components/content/Content";
 
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +57,6 @@ class App extends React.Component {
       <div className="App wrapper">
         <SideBar toggle={this.toggle} isOpen={this.state.isOpen} />
         <Content toggle={this.toggle} isOpen={this.state.isOpen} />
-
       </div>
     );
   }

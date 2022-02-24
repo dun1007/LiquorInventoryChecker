@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const AlcoholSchema = new mongoose.Schema(
+const ItemSchema = new mongoose.Schema(
     {
         name: { //Full name of product
             type: String,
@@ -31,10 +31,7 @@ const AlcoholSchema = new mongoose.Schema(
             required: true,
         },   
     },
-    {
-        timestamps: true,
-    }
 )
 
-const AlcoholModel = mongoose.model("alcohols", AlcoholSchema)
-module.exports = AlcoholModel
+const Item = mongoose.model("item", ItemSchema)
+module.exports = Item, ItemSchema

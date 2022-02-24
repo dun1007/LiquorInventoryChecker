@@ -1,140 +1,98 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Axios from 'axios'
 import { Table, InputGroup, FormControl, Modal, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faTrashAlt
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 function Inventory() {
-  //Values of item
-  const [listOfAlcohols, setListofAlcohols] = useState([]);
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [volume, setVolume] = useState(0);
-  const [unit, setUnit] = useState(0);
-  const [packaging, setPackaging] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [netInventoryValue, setNetInventoryValue] = useState(0);
-  //Add, Delete, Edit Modals
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [currentItemID, setCurrentItemID] = useState("");
-  const handleAddClose = () => setShowAddModal(false);
-  const handleAddShow = () => setShowAddModal(true);
-  const handleDeleteClose = () => setShowDeleteModal(false);
-  const handleDeleteShow = () => setShowDeleteModal(true);
-  const handleEditClose = () => setShowEditModal(false);
-  const handleEditShow = () => setShowEditModal(true);
+  const navigate = useNavigate()
+  const {user} = useSelector((state) => state.auth)
 
-  //fires instantly as page loads
+  const [listOfItems, setListOfItems] = useState([])
+  const [filteredListOfItems, setFilteredListOfItems] = useState([])
+  const [currentItemID, setCurrentItemID] = useState("")
+  const [item, setItem] = useState({
+    name: '',
+    type: '',
+    volume: '',
+    unit: '',
+    packaging: '',
+    price: '',
+    quantity: '',
+  })
+  const [openModal, setOpenModal] = useState({
+    add: false,
+    edit: false,
+    delete: false,
+  })
+
+  const changeHandler = (e) => {
+    e.persist()
+    setItem((prevValues) => {
+      return {
+        ...prevValues,
+        [e.target.name]: e.target.value
+      }
+    })
+  }
+
+  const toggleModal = (modal) => {
+    setOpenModal({ ...openModal, [modal]: !openModal[modal] });
+  }
+
+
+  
   useEffect(() => {
-    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
-      setListofAlcohols(response.data);
-      recalculateInventoryNetWorth();
-    });
-  }, []);
+    // Check if user is logged in first
+    if (!user) {
+      navigate('/login')
+    } else {
+      getItems()
+    }
+  }, [user, navigate]);
 
+  const getAuthHeader = () => {
+    return {headers: { authorization: `Bearer ${user.token}`}}
+  }
+
+  const getItems = () => {
+    Axios.get("http://localhost:5000/api/inventory", getAuthHeader()).then((response) => {
+      setListOfItems(response.data);
+    });
+  }
   const addItem = () => {
-    Axios.post("http://localhost:5000/api/alcohols", {
-        name: name,
-        type: type,
-        volume: volume,
-        unit: unit,
-        packaging: packaging,
-        quantity: quantity,
-        price: price
-      }).then((response) => {
-        //console.log(response.data);
-        setListofAlcohols([
-          ...listOfAlcohols, 
-          {
-            _id: response.data._id,
-            name: name,
-            type: type,
-            volume: volume,
-            unit: unit,
-            packaging: packaging,
-            quantity: quantity,
-            price: price
-          }
-        ]);
-        recalculateInventoryNetWorth();
-    });
-
+    Axios.post("http://localhost:5000/api/inventory", item, getAuthHeader()).then((response) => {})
   }
 
   const editItem = () => {
-    Axios.put(`http://localhost:5000/api/alcohols/${currentItemID}`, {
-        id: currentItemID,
-        name: name,
-        type: type,
-        volume: volume,
-        unit: unit,
-        packaging: packaging,
-        quantity: quantity,
-        price: price
-      }).then(()=> {
-        setListofAlcohols(listOfAlcohols.map((item)=> {
-          return item._id === currentItemID ? 
-            {
-              _id: currentItemID,
-              name: name,
-              type: type,
-              volume: volume,
-              unit: unit,
-              packaging: packaging,
-              quantity: quantity,
-              price: price
-            } 
-            : item;
-        }))
-        recalculateInventoryNetWorth();
-      });
+    Axios.put(`http://localhost:5000/api/inventory/${currentItemID}`, item, getAuthHeader()).then((response) => {})
   }
 
-  const removeItem = () => {
-    Axios.delete(`http://localhost:5000/api/alcohols/${currentItemID}`).then(()=> {
-      setListofAlcohols(listOfAlcohols.filter((item)=> {
-        return item._id != currentItemID;
-      }));
-      recalculateInventoryNetWorth();
-    }); 
+  const deleteItem = () => {
+    Axios.delete(`http://localhost:5000/api/inventory/${currentItemID}`, getAuthHeader()).then((response) => {})
   }
 
-  const updateInventoryList = (value) => {
-    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
-    setListofAlcohols(response.data.filter(item => item.name.includes(value)));
+  const filterItemList = (value) => {
+    Axios.get("http://localhost:5000/api/inventory", getAuthHeader()).then((response) => {
+      setListOfItems(response.data.filter(item => item.name.includes(value)));
     });
   }
-
-  const recalculateInventoryNetWorth = () => {
-    Axios.get("http://localhost:5000/api/alcohols").then((response) => {
-      const newNetWorth = response.data.reduce((prev, next) => prev + next.price*next.quantity,0);
-      setNetInventoryValue(newNetWorth);
-    });
-  }
-
-
 
   return (
     <div>
+      <h1>Welcome, {user && user.name}!</h1>
       <div>
-        <p>Net Value of Inventory: ${netInventoryValue}</p>
-        <Button onClick={handleAddShow} className="mb-3 product-input">
+        <Button onClick={()=> toggleModal("add")} className="mb-3 product-input">
           Add a product
         </Button>
       </div>
       <div className="inventorySearchBar">
         <InputGroup size="sm" className="mb-3">
           <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-default" placeholder="Filter items by name..."
-            onChange={(event) => {
-              updateInventoryList(event.target.value);
-            }} 
+            onChange={(event) => {filterItemList(event.target.value)}} 
           />
         </InputGroup>
       </div>
@@ -150,153 +108,97 @@ function Inventory() {
               <th></th>
             </tr>
           </thead>
-          {listOfAlcohols.map(alcohol => {
+          <tbody>
+          {listOfItems.map(item => {
             return (
-              <tbody>
-                <tr>
-                  <td colSpan={3}>{alcohol.name}</td>
-                  <td>{alcohol.type}</td>
-                  <td>{alcohol.volume}mL ({alcohol.packaging}) (x{alcohol.unit})</td>
-                  <td>{alcohol.quantity}</td>
-                  <td>{alcohol.price}</td>
-                  <td colSpan={2}> 
-                    <Button size="sm" className="" variant="success" onClick={()=> {
-                      setCurrentItemID(alcohol._id);
-                      setName(alcohol.name);
-                      setType(alcohol.type);
-                      setVolume(alcohol.volume);
-                      setUnit(alcohol.unit);
-                      setPackaging(alcohol.packaging);
-                      setPrice(alcohol.price);
-                      setQuantity(alcohol.quantity);
-                      handleEditShow(); 
-                    }}>
-                      <FontAwesomeIcon icon={faEdit} className="fa-solid" />
-                    </Button>
-                    <Button size="sm" variant="danger" onClick={()=>{
-                      setCurrentItemID(alcohol._id);
-                      handleDeleteShow(); 
-                    }}>
-                      <FontAwesomeIcon icon={faTrashAlt} className="fa-solid" />
-                    </Button>
-                  </td>
-                </tr>
-              </tbody>
+              <tr key={item._id}>
+                <td colSpan={3}>{item.name}</td>
+                <td>{item.type}</td>
+                <td>{item.volume}mL ({item.packaging}) (x{item.unit})</td>
+                <td>{item.quantity}</td>
+                <td>{item.price}</td>
+                <td colSpan={2}> 
+                  <Button size="sm" variant="success" onClick={(e)=> {
+                    toggleModal("edit"); 
+                    setCurrentItemID(item._id);
+                    setItem(item);
+                  }}>
+                    <FontAwesomeIcon icon={faEdit} className="fa-solid" />
+                  </Button>
+                  <Button size="sm" variant="danger" onClick={()=>{
+                    toggleModal("delete");
+                    setCurrentItemID(item._id);
+                  }}>
+                    <FontAwesomeIcon icon={faTrashAlt} className="fa-solid" />
+                  </Button>
+                </td>
+              </tr>
             );
           })}
+          </tbody>
         </Table>
       </div>
       
-      <Modal show={showAddModal} onHide={handleAddClose}>
+      <Modal name="add" show={openModal.add} onHide={() => toggleModal("add")}>
         <Modal.Header closeButton>
           <Modal.Title>Add a product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Product Name <input className="product-input" type="text" placeholder="Name of Product..." 
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-          /><br /><br />
-          Product Type <input className="product-input" type="text" placeholder="Beer/Wine/Liquor/etc..."           
-            onChange={(event) => {
-              setType(event.target.value);
-            }}
-          /><br /><br />
-          Individual Volume<input className="product-input" type="number" placeholder="Volume...(in mL)" 
-            onChange={(event) => {
-              setVolume(event.target.value);
-            }}
-          /><br /><br />
-          Minimum Unit<input className="product-input" type="number" placeholder="15(Can)/1(Single)/etc..." 
-            onChange={(event) => {
-              setUnit(event.target.value);
-            }}
-          /><br /><br />
-          Packaging Type<input className="product-input" type="text" placeholder="Bottle/Can/etc..." 
-            onChange={(event) => {
-              setPackaging(event.target.value);
-            }}
-          /><br /><br />
-          Price<input className="product-input" type="number" placeholder="Price..." 
-            onChange={(event) => {
-              setPrice(event.target.value);
-            }}
-          /><br /><br />
-          Quantity<input className="product-input" type="number" placeholder="Number of products..." 
-            onChange={(event) => {
-              setQuantity(event.target.value);
-            }}
-          />
+          Product Name <input className="product-input" type="text" name="name" placeholder="Name of Product..." 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Product Type <input className="product-input" type="text" name="type" placeholder="Beer/Wine/Liquor/etc..."           
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Individual Volume<input className="product-input" type="number" name="volume" placeholder="Volume...(in mL)" 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Minimum Unit<input className="product-input" type="number" name="unit" placeholder="15(Can)/1(Single)/etc..." 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Packaging Type<input className="product-input" type="text" name="packaging" placeholder="Bottle/Can/etc..." 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Price<input className="product-input" type="number" name="price" placeholder="Price..." 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Quantity<input className="product-input" type="number" name="quantity" placeholder="Number of products..." 
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={()=> {
-            handleAddClose();
-          }}>Close</Button>
-          <Button variant="primary" onClick={()=> {
-            handleAddClose();
-            addItem();
-          }}>Save</Button>
+          <Button variant="secondary" onClick={()=> toggleModal("add")}>Close</Button>
+          <Button variant="primary"  onClick={()=> {toggleModal("add"); addItem();}}>Save</Button>
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showEditModal} onHide={handleEditClose}>
+      <Modal name="edit" show={openModal.edit} onHide={() => toggleModal("edit")}>
         <Modal.Header closeButton>
           <Modal.Title>Edit a product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Product Name <input className="product-input" type="text" placeholder="Name of Product..." 
-            value={`${name}`}
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-          /><br /><br />
-          Product Type <input className="product-input" type="text" placeholder="Beer/Wine/Liquor/etc..."           
-            value={`${type}`}
-            onChange={(event) => {
-              setType(event.target.value);
-            }}
-          /><br /><br />
-          Individual Volume<input className="product-input" type="number" placeholder="Volume...(in mL)" 
-            value={`${volume}`}
-            onChange={(event) => {
-              setVolume(event.target.value);
-            }}
-          /><br /><br />
-          Minimum Unit<input className="product-input" type="number" placeholder="15(Can)/1(Single)/etc..." 
-            value={`${unit}`}
-            onChange={(event) => {
-              setUnit(event.target.value);
-            }}
-          /><br /><br />
-          Packaging Type<input className="product-input" type="text" placeholder="Bottle/Can/etc..." 
-            value={`${packaging}`}
-            onChange={(event) => {
-              setPackaging(event.target.value);
-            }}
-          /><br /><br />
-          Price<input className="product-input" type="number" placeholder="Price..." 
-            value={`${price}`}
-            onChange={(event) => {
-              setPrice(event.target.value);
-            }}
-          /><br /><br />
-          Quantity<input className="product-input" type="number" placeholder="Number of products..." 
-            value={`${quantity}`}
-            onChange={(event) => {
-              setQuantity(event.target.value);
-            }}
-          />
+          Product Name <input className="product-input" name="name" type="text" placeholder="Name of Product..." 
+            value={`${item.name}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Product Type <input className="product-input" name="type" type="text" placeholder="Beer/Wine/Liquor/etc..."           
+            value={`${item.type}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Individual Volume<input className="product-input" name="volume" type="number" placeholder="Volume...(in mL)" 
+            value={`${item.volume}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Minimum Unit<input className="product-input" name="unit" type="number" placeholder="15(Can)/1(Single)/etc..." 
+            value={`${item.unit}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Packaging Type<input className="product-input" name="packaging" type="text" placeholder="Bottle/Can/etc..." 
+            value={`${item.packaging}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Price<input className="product-input" name="price" type="number" placeholder="Price..." 
+            value={`${item.price}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
+          Quantity<input className="product-input" name="quantity" type="number" placeholder="Number of products..." 
+            value={`${item.quantity}`}
+            onChange={(e) => {changeHandler(e);}} /><br /><br />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditClose}>Close</Button>
-          <Button variant="primary" onClick={()=> {
-            handleEditClose();
-            editItem();
-          }}>Save</Button>
+          <Button variant="secondary" onClick={()=> toggleModal("edit")}>Close</Button>
+          <Button variant="primary" onClick={()=> {toggleModal("edit"); editItem();}}>Save</Button>
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showDeleteModal} onHide={handleDeleteClose}>
+      <Modal name="delete" show={openModal.delete} onHide={() => toggleModal("delete")}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Product</Modal.Title>
         </Modal.Header>
@@ -304,11 +206,8 @@ function Inventory() {
           Are you sure?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleDeleteClose}>Close</Button>
-          <Button variant="danger" onClick={() => {
-            handleDeleteClose();
-            removeItem();
-          }}>Delete</Button>
+          <Button variant="secondary" onClick={() => toggleModal("delete")}>Close</Button>
+          <Button variant="danger" onClick={() => {toggleModal("delete"); deleteItem();}}>Delete</Button>
         </Modal.Footer>
       </Modal>
     </div>

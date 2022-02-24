@@ -1,11 +1,11 @@
-const AlcoholModel = require('../models/alcoholModel')
+const Item = require('../models/itemModel')
 const mongoose = require('mongoose');
 
 // @desc    Get alcohols
-// @route   GET /api/alcohols
+// @route   GET /api/items
 // @access  Private
 const getAlcohols = (req, res) => {
-    AlcoholModel.find({}, (err, result) => {
+    Item.find({}, (err, result) => {
         if (err) {
             res.status(400).json(err);
         } else {
@@ -15,24 +15,23 @@ const getAlcohols = (req, res) => {
 }
 
 // @desc    Add an alcohol
-// @route   POST /api/alcohols
+// @route   POST /api/items
 // @access  Private
 const addAlcohol = async (req, res) => {
-    if (!req.body.name) {
-        res.status(400);
-        throw new Error('Cannot add without name')
-    }
-    const newAlcohol = new AlcoholModel(req.body);
-    await newAlcohol.save();
-    res.status(200).send(newAlcohol);
+    const newItem = new Item(req.body);
+    await newItem.save();
+    res.status(200).send(newItem);
+
 }
 
+
+
 // @desc    Update an alcohol
-// @route   PUT /api/alcohols/:id
+// @route   PUT /api/items/:id
 // @access  Private
 const updateAlcohol = async (req, res) => {
     try {
-        await AlcoholModel.findByIdAndUpdate(req.params.id, 
+        await Item.findByIdAndUpdate(req.params.id, 
             {
                 name: req.body.name,
                 type: req.body.type,
@@ -52,11 +51,11 @@ const updateAlcohol = async (req, res) => {
 }
 
 // @desc    Delete an alcohol
-// @route   DELETE /api/alcohols/:id
+// @route   DELETE /api/items/:id
 // @access  Private
 const deleteAlcohol = async (req, res) => {
     try {
-        await AlcoholModel.findByIdAndDelete(req.params.id).exec()
+        await Item.findByIdAndDelete(req.params.id).exec()
     } catch(e) {
         res.status(400)
         throw e
@@ -65,11 +64,11 @@ const deleteAlcohol = async (req, res) => {
 }
 
 // @desc    Find an alcohol (by ID)
-// @route   DELETE /api/alcohols/find/:id
+// @route   DELETE /api/items/find/:id
 // @access  Private
 const findAlcohol = async (req, res) => {
     const id = mongoose.Types.ObjectId(req.params.id)
-    const alcohol = await AlcoholModel.findById({_id:id})
+    const alcohol = await Item.findById({_id:id})
     if (!alcohol) {
         res.status(400)
         throw new Error('Cannot find an item')

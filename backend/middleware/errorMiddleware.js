@@ -1,3 +1,4 @@
+//Middleware is a function that runs during request response
 const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : 500
   

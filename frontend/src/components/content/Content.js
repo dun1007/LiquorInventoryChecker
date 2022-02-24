@@ -2,6 +2,10 @@ import React from "react";
 import classNames from "classnames";
 import { Container } from "react-bootstrap";
 import NavBar from "./Navbar";
+
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import Error from "./Error";
 import Inventory from "./Inventory";
 import Order from "./Order";
@@ -10,8 +14,8 @@ import Sales from "./Sales";
 import Employees from "./Employees";
 import FAQ from "./FAQ";
 import Contact from "./Contact";
-import Account from "../auth/Account";
-import Logout from "../auth/Logout";
+import Login from "./Login"
+import Register from "./Register"
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
@@ -23,20 +27,23 @@ class Content extends React.Component {
         className={classNames("content", { "is-open": this.props.isOpen })}
       >
         <NavBar toggle={this.props.toggle} />
+        <ToastContainer />
         <Router>
-          <Routes>
-            <Route path="/" element={<Dashboard />}/>
-            <Route path="/Dashboard" element={<Dashboard />}/>
-            <Route path="/Inventory" element={<Inventory />}/>
-            <Route path="/Order" element={<Order />}/>
-            <Route path="/Sales" element={<Sales />}/>
-            <Route path="/Employees" element={<Employees />}/>
-            <Route path="/FAQ" element={<FAQ />}/>
-            <Route path="/Contact" element={<Contact />}/>
-            <Route path="/Account" element={<Account />}/>
-            <Route path="/Logout" element={<Logout />}/>
-            <Route path="*" element={<Error />}/>
-          </Routes>
+            <Routes>
+                <Route path="/" element={<Dashboard />}/>
+                <Route path="/dashboard" element={<Dashboard />}/>
+                <Route path="/inventory" element={<Inventory />}/>
+                <Route path="/order" element={<Order />}/>
+                <Route path="/sales" element={<Sales />}/>
+                <Route path="/employees" element={<Employees />}/>
+                <Route path="/FAQ" element={<FAQ />}/>
+                <Route path="/contact" element={<Contact />}/>
+                <Route path="/register" element={<Register />}/>
+                <Route path="/login" element={<Login />}/>
+                <Route path="/account" />
+                <Route path="/logout" />
+                <Route path="*" element={<Error />}/>
+            </Routes>
         </Router>
       </Container>
 

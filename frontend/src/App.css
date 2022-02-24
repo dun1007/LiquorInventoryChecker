@@ -133,6 +133,21 @@ li a.dropdown-toggle::after {
   width: 50px;
 }
 
+.login-heading {
+  text-align: center;
+}
+
+.login-form {
+  margin-left: 20%;
+  width: 60%;
+  display: inline-block;
+}
+
+.login-submit-button {
+  width: 30%;
+  margin-left: 35%;
+}
+
 @media only screen and (max-width: 575.98px) {
   .content.is-open {
     /*margin-left: 100%;*/
