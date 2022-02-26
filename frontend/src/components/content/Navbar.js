@@ -12,11 +12,7 @@ class NavBar extends React.Component {
 
     return (
       <div>
-        <Navbar
-          bg="light"
-          className="navbar shadow-sm p-3 mb-5 bg-white rounded"
-          expand
-        >
+        <Navbar bg="light" className="navbar shadow-sm p-3 mb-5 bg-white rounded" >
           <Button variant="outline-info" onClick={this.props.toggle}>
             <FontAwesomeIcon icon={faAlignLeft} />
           </Button>
@@ -41,7 +37,7 @@ function NavbarPersonal() {
     //navigate('/')
   }
   return (
-    <Nav className="ml-auto" navbar>
+    <Nav className="ms-auto" >
       {user ? (
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav.Link href="/logout" onClick={onLogout}><FaSignOutAlt />Logout</Nav.Link>
@@ -50,7 +46,7 @@ function NavbarPersonal() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav.Link href="/login"><FaSignInAlt />Login</Nav.Link>
           <Nav.Link href="/register"><FaUser />Register</Nav.Link>
-          </Navbar.Collapse>
+        </Navbar.Collapse>
       )}
     </Nav>  
   )

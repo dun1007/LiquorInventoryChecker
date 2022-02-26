@@ -8,14 +8,14 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import Error from "./Error";
 import Inventory from "./Inventory";
-import Order from "./Order";
+import Order from "./order/Order";
 import Dashboard from "./Dashboard";
 import Sales from "./Sales";
 import Employees from "./Employees";
 import FAQ from "./FAQ";
 import Contact from "./Contact";
-import Login from "./Login"
-import Register from "./Register"
+import Login from "./authentication/Login"
+import Register from "./authentication/Register"
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 

@@ -30,6 +30,7 @@ a:focus {
 .sidebar {
   min-width: 250px;
   max-width: 250px;
+  height: 100vh;
   background: #354052;
   color: #adb5bd;
   margin-left: -250px;
@@ -45,9 +46,11 @@ a:focus {
 .sidebar-header {
   background: #313b4c;
   color: #adb5bd;
+  height: 125px;
+  display: flex;
 }
 
-.sidebar-header h3{
+.sidebar-header h1{
   color: #fff;
   padding: 1em;
 }
@@ -55,6 +58,10 @@ a:focus {
 .sidebar ul p {
   color: #fff;
   padding: 10px;
+}
+
+.sidebar-title {
+  align-self: center;
 }
 
 .collapse.show, 
@@ -146,6 +153,19 @@ li a.dropdown-toggle::after {
 .login-submit-button {
   width: 30%;
   margin-left: 35%;
+}
+
+.accordion-body {
+  background-color: white;
+}
+
+.input-number {
+  width: 70px;
+  height: 25px;
+}
+
+.input-number-popover {
+  width: 100px;
 }
 
 @media only screen and (max-width: 575.98px) {

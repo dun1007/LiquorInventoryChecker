@@ -12,10 +12,9 @@ app.use(express.json());
 app.use(cors());
 
 
-//app.use('/api/items', require('./routes/itemRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/inventory', require('./routes/inventoryRoutes'))
-
+app.use('/api/weekly', require('./routes/weeklyRoutes'))
 
 app.use(errorHandler)
 

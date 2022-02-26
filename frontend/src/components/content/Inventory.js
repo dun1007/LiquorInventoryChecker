@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -12,7 +12,6 @@ function Inventory() {
   const {user} = useSelector((state) => state.auth)
 
   const [listOfItems, setListOfItems] = useState([])
-  const [filteredListOfItems, setFilteredListOfItems] = useState([])
   const [currentItemID, setCurrentItemID] = useState("")
   const [item, setItem] = useState({
     name: '',
@@ -64,15 +63,27 @@ function Inventory() {
     });
   }
   const addItem = () => {
-    Axios.post("http://localhost:5000/api/inventory", item, getAuthHeader()).then((response) => {})
+    Axios.post("http://localhost:5000/api/inventory", item, getAuthHeader()).then((response) => {
+      getItems()
+    })
   }
 
   const editItem = () => {
-    Axios.put(`http://localhost:5000/api/inventory/${currentItemID}`, item, getAuthHeader()).then((response) => {})
+    Axios.put(`http://localhost:5000/api/inventory/${currentItemID}`, item, getAuthHeader()).then((response) => {
+      let items = [...listOfItems]
+      for (let i = 0; i < items.length; i++ ) {
+        if (items[i]._id === item._id) {
+          items[i] = item
+          break
+        }
+      }
+      getItems()
+    })
   }
 
   const deleteItem = () => {
-    Axios.delete(`http://localhost:5000/api/inventory/${currentItemID}`, getAuthHeader()).then((response) => {})
+    Axios.delete(`http://localhost:5000/api/inventory/${currentItemID}`, getAuthHeader()).then((response) => {getItems()})
+    
   }
 
   const filterItemList = (value) => {
