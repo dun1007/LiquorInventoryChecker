@@ -1,11 +1,11 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const cors = require('cors')
 const connectDB = require('./config/db')
 const {errorHandler} = require('./middleware/errorMiddleware')
 const port = process.env.PORT || 5000
 const app = express()
 const path = require('path')
+const cors = require('cors')
 
 connectDB()
 
