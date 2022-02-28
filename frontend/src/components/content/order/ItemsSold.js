@@ -7,46 +7,47 @@ import Axios from 'axios'
 
 export default class ItemsSold extends Component {
 	constructor(props) {
-			super(props);
-			this.state = {
-					user: props.user, // User credentials
-					week: 0,
-					year: 0,
-					listOfItems: [],	// List of items in add form
-					listOfItemsAdded: [], // List of items in item sold list
-					currentItemID: "",
-					item: {
-							name: '',
-							type: '',
-							volume: '',
-							unit: '',
-							packaging: '',
-							price: '',
-							quantity: '',
-					},
-					//Modal Toggles
-					addModal: false,
-					editModal: false,
-					deleteModal: false,
-					quantityOfItemToAdd: 0,
-			}
+		super(props);
+		this.state = {
+			user: props.user, // User credentials
+			week: 0,
+			year: 0,
+			listOfItems: [],	// List of items in add form
+			listOfItemsAdded: [], // List of items in item sold list
+			currentItemID: "",
+			item: {
+					name: '',
+					type: '',
+					volume: '',
+					unit: '',
+					packaging: '',
+					price: '',
+					quantity: '',
+			},
+			//Modal Toggles
+			addModal: false,
+			editModal: false,
+			deleteModal: false,
+			quantityOfItemToAdd: 0,
+		}
 	}   
 	
-	componentDidUpdate = () => {
+	componentDidUpdate = async () => {
 		if (this.state.week !== this.props.week || this.state.year !== this.props.year) {
-			this.setState({week: this.props.week, year: this.props.year})
+			this.setState({week: this.props.week, year: this.props.year}, () => {
+				this.getItemsSold()
+			})
 		}
 	}
 
 	componentDidMount = () => {
 		this.setState({week: this.props.week, year: this.props.year}, () => {
-			Axios.post(`http://localhost:5000/api/weekly/create/${this.props.year}/${this.props.week}`, undefined, this.getAuthHeader()) // Create weekly details for user if it does not have one
 			this.getProductToAdd() // fetch inventory
 			this.getItemsSold() // fetch list of items added
 		})
 	}
 
-	getAuthHeader = () => { return {headers: { authorization: `Bearer ${this.state.user.token}`}} }
+	getAuthHeader = () => { return {headers: { authorization: `Bearer ${this.state.user && this.state.user.token}`}} }
 
 	toggleAddModal = () => {
 		if (!this.state.addModal) {
@@ -86,7 +87,7 @@ export default class ItemsSold extends Component {
 		isDuplicate ? this.editItemQuantity() :
 			Axios.post(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/items_sold`, this.state.item, this.getAuthHeader()).then(() => {
 				this.getItemsSold()
-			})
+		})
 	}
 
 	getItemsSold = () => {
@@ -131,46 +132,45 @@ export default class ItemsSold extends Component {
 
 		return (
 			<div>
-				<Button className="mb-3" onClick={this.toggleAddModal}>
-				Add a product
+				<Button className="m-3" onClick={this.toggleAddModal}>
+					Add a product
 				</Button>
 				<Table responsive hover size="sm">
-						<thead>
-								<tr>
-										<th colSpan={2}>Name</th>
-										<th></th>
-										<th>Properties</th>
-										<th>Sold</th>
-										<th>Edit</th>
-										<th>Del.</th>
-								</tr>
-						</thead>
-						<tbody>
-							{this.state.listOfItemsAdded.map(item => {
-								return (
+					<thead>
+						<tr>
+							<th colSpan={2}>Name</th>
+							<th></th>
+							<th>Properties</th>
+							<th>Sold</th>
+							<th>Edit</th>
+							<th>Del.</th>
+						</tr>
+					</thead>
+					<tbody>
+						{this.state.listOfItemsAdded.map(item => {
+							return (
 								<tr key={"order-itemsSold-" + item._id}>
-										<td colSpan={2}>{item.name}</td>
-										<td></td>
-										<td>{item.type}, {item.volume}mL ({item.packaging}) (x{item.unit})</td>
-										<td>{item.quantity}</td>
-										<td>
-											<FormControl type="number" className="input-number"
-												onChange={(event) => this.updateQuantity(event, item)}
-												onBlur={(event) => this.updateQuantity(event, item)}
-											/>
-										</td>
-										<td>
-											<Button size="sm" variant="danger" onClick={()=>{
-													this.deleteItem(item._id)
-												}}>
-												<FontAwesomeIcon icon={faTrashAlt} className="fa-solid" />
-											</Button>
-										</td>
+									<td colSpan={2}>{item.name}</td>
+									<td></td>
+									<td>{item.type}, {item.volume}mL ({item.packaging}) (x{item.unit})</td>
+									<td>{item.quantity}</td>
+									<td>
+										<FormControl type="number" className="input-number"
+											onChange={(event) => this.updateQuantity(event, item)}
+											onBlur={(event) => this.updateQuantity(event, item)}
+										/>
+									</td>
+									<td>
+										<Button size="sm" variant="danger" onClick={()=>{
+												this.deleteItem(item._id)
+											}}>
+											<FontAwesomeIcon icon={faTrashAlt} className="fa-solid" />
+										</Button>
+									</td>
 								</tr>
-								);
-							})}
-							
-						</tbody>
+							);
+						})}
+					</tbody>
 				</Table>
 
 				<Modal name="add" show={this.state.addModal} onHide={this.toggleAddModal} enforceFocus={false}>

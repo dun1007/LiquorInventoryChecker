@@ -53,9 +53,7 @@ function Inventory() {
     }
   }, [user, navigate]);
 
-  const getAuthHeader = () => {
-    return {headers: { authorization: `Bearer ${user.token}`}}
-  }
+  const getAuthHeader = () => { return {headers: { authorization: `Bearer ${user.token}`}} }
 
   const getItems = () => {
     Axios.get("http://localhost:5000/api/inventory", getAuthHeader()).then((response) => {
@@ -94,11 +92,18 @@ function Inventory() {
 
   return (
     <div>
-      <h1>Welcome, {user && user.name}!</h1>
+      <h1 className="text-center">Inventory for {user && user.name}</h1>
+      {((user && user.name) === "Demo Account") ? <p>I see you are on demo mode. Items
+        in demo mode are randomly generated and have no relationship with real ones. Although Dom Perignon 
+        costing $5 would be pretty sweet.<br /><br /> Feel free to fiddle around with Add buttons and Filter.
+      </p> : <p />}
       <div>
         <Button onClick={()=> toggleModal("add")} className="mb-3 product-input">
           Add a product
         </Button>
+        {/*<Button onClick={()=> addRandomItem()} className="mb-3 product-input">
+          hehexd
+        </Button>*/}
       </div>
       <div className="inventorySearchBar">
         <InputGroup size="sm" className="mb-3">

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAlignLeft, } from "@fortawesome/free-solid-svg-icons"
 import { Navbar, Button, Nav } from "react-bootstrap"
@@ -8,6 +8,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 //import { Link, useNavigate } from 'react-router-dom'
 
 class NavBar extends React.Component {
+  
   render() {
 
     return (
@@ -36,6 +37,7 @@ function NavbarPersonal() {
     dispatch(reset())
     //navigate('/')
   }
+
   return (
     <Nav className="ms-auto" >
       {user ? (

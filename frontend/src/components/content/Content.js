@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { Container } from "react-bootstrap";
 import NavBar from "./Navbar";
 
+import { useSelector, useDispatch } from 'react-redux'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -12,14 +13,16 @@ import Order from "./order/Order";
 import Dashboard from "./Dashboard";
 import Sales from "./Sales";
 import Employees from "./Employees";
-import FAQ from "./FAQ";
+import UserGuide from "./UserGuide";
 import Contact from "./Contact";
 import Login from "./authentication/Login"
 import Register from "./authentication/Register"
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
+
 class Content extends React.Component {
+  
   render() {
     return (
       <Container
@@ -30,13 +33,13 @@ class Content extends React.Component {
         <ToastContainer />
         <Router>
             <Routes>
-                <Route path="/" element={<Dashboard />}/>
-                <Route path="/dashboard" element={<Dashboard />}/>
+                <Route path="/" element={<UserGuide />}/>
+                {/*<Route path="/dashboard" element={<Dashboard />}/>*/}
                 <Route path="/inventory" element={<Inventory />}/>
                 <Route path="/order" element={<Order />}/>
                 <Route path="/sales" element={<Sales />}/>
                 <Route path="/employees" element={<Employees />}/>
-                <Route path="/FAQ" element={<FAQ />}/>
+                <Route path="/UserGuide" element={<UserGuide />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path="/register" element={<Register />}/>
                 <Route path="/login" element={<Login />}/>

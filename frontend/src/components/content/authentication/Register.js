@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { register, reset } from '../../../features/auth/authSlice'
+import { login, register, reset } from '../../../features/auth/authSlice'
 import { FaUser } from 'react-icons/fa'
 import Spinner from './Spinner'
 
@@ -62,6 +62,17 @@ function Register() {
     }
   }
 
+  const onDemoClick = (e) => {
+    e.preventDefault()
+
+    const userData = {
+      email: "demo@demo.com",
+      password: "demo",
+    }
+
+    dispatch(login(userData))
+  }
+
   if (isLoading) {
     return <Spinner />
   }
@@ -108,51 +119,15 @@ function Register() {
             Submit
           </Button>
         </Form>
+        
+        <div className="text-center">
+          <Button variant="secondary" className="login-demo-button mt-5" onClick={onDemoClick}>
+            Try out with Demo Account
+          </Button>
+        </div>
       </div>
     </div>
   )
 }
 
 export default Register
-
-/*
-        <form onSubmit={onSubmit}>
-          <input
-                type='text'
-                className='form-control'
-                id='name'
-                name='name'
-                value={name}
-                placeholder='Enter your name'
-                onChange={onChange}
-              />
-          <input
-                type='email'
-                className='form-control'
-                id='email'
-                name='email'
-                value={email}
-                placeholder='Enter your email'
-                onChange={onChange}
-              />
-          <input
-                type='password'
-                className='form-control'
-                id='password'
-                name='password'
-                value={password}
-                placeholder='Enter your password'
-                onChange={onChange}
-              />
-          <input
-                type='password2'
-                className='form-control'
-                id='password2'
-                name='password2'
-                value={password2}
-                placeholder='Confirm your password'
-                onChange={onChange}
-              />
-          <button type="submit" className="btn btn-block">Submit</button>
-        </form>
-        */

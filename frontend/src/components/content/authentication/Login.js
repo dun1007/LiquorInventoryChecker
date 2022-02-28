@@ -53,6 +53,17 @@ function Login() {
     dispatch(login(userData))
   }
 
+  const onDemoClick = (e) => {
+    e.preventDefault()
+
+    const userData = {
+      email: "demo@demo.com",
+      password: "demo",
+    }
+
+    dispatch(login(userData))
+  }
+
   if (isLoading) {
     return <Spinner />
   }
@@ -86,6 +97,11 @@ function Login() {
             Submit
           </Button>
         </Form>
+        <div className="text-center">
+          <Button variant="secondary" className="login-demo-button mt-5" onClick={onDemoClick}>
+            Try out with Demo Account
+          </Button>
+        </div>
       </div>
     </div>
   )

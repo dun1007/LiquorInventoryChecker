@@ -42,9 +42,10 @@ const WeeklySchema = new mongoose.Schema(
         },
         year: { type: Number, required: [true, 'Need year which this date was created']},
         week: { type: Number, required: [true, 'Need which week this data is about']},
+        isFinalized: { type: Boolean, default: false},
         itemsSold: [ItemSchema],
         orderReceived: [ItemSchema],
-        ordeForNextWeek: [ItemSchema],
+        orderForNextWeek: [ItemSchema],
     },{ timestamps: true, }
 )
 

@@ -112,9 +112,6 @@ li a.dropdown-toggle::after {
   display: none;
 }
 
-#bot-nav-items {
-}
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -168,6 +165,20 @@ li a.dropdown-toggle::after {
   width: 100px;
 }
 
+.contact-icon {
+  color: black;
+}
+.contact-icon:hover {
+  color: lightblue;
+}
+
+.beta-tag {
+  height: 50px;
+  width: 100px;
+  position: absolute;
+  margin-top: -125px;
+  margin-left: -25px;
+}
 @media only screen and (max-width: 575.98px) {
   .content.is-open {
     /*margin-left: 100%;*/

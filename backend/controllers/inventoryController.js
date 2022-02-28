@@ -3,6 +3,7 @@ const Item = require('../models/itemModel')
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler')
 
+
 // @desc    Get items of logged on user
 // @route   GET /api/inventory
 // @access  Private
@@ -24,7 +25,7 @@ const addItem = asyncHandler(async (req, res) => {
     // Try to find user's inventory and ready the item
     let aInventory = await Inventory.find({user:id})
     //const aItem = new Item(req.body)
-    
+    console.log(aInventory)
     // Do we need to create inventory for user first? Otherwise, access first index
     if (aInventory.length == 0) {
         aInventory = new Inventory({user:id, })    
@@ -59,6 +60,19 @@ const updateItem = asyncHandler(async (req, res) => {
     inventory[0].save()
 
     res.status(200).send("Updated")
+})
+
+
+// @desc    Update whole inventory
+// @route   PUT /api/inventory/all
+// @access  Private
+const updateInventory = asyncHandler(async (req, res) => {
+    const id = req.user.id
+
+    const inventory = await Inventory.find({user:id})
+    inventory[0].items = req.body
+    inventory[0].save()
+    res.status(200).send(inventory[0].items)
 })
 
 // @desc    Delete an item
@@ -111,5 +125,6 @@ module.exports = {
     addItem,
     updateItem,
     deleteItem,
-    findItem
+    findItem,
+    updateInventory
 }

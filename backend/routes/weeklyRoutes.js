@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router()
 const { createWeeklyDetails, getOrderSpans, 
     getItemsSold, addItemSold, editItemSold, deleteItemSold, 
-    getOrdersReceived, addItemOrdered, editItemOrdered, deleteItemOrdered,
-    getItemToOrder, addItemToOrder, editItemToOrder, deleteItemToOrder } = require('../controllers/weeklyController')
+    getOrdersReceived, addItemOrdered, editItemOrdered, deleteItemOrdered, flushItemOrdered,
+    getItemToOrder, addItemToOrder, editItemToOrder, deleteItemToOrder, flushItemToOrder,
+    getAllDatasForUser, getWeeklyDataForUser, setFinalizeTrue} = require('../controllers/weeklyController')
 
 const { protect } = require('../middleware/authMiddleware')
 
@@ -15,10 +16,16 @@ router.route('/:year/:week/items_sold/').get(protect, getItemsSold).post(protect
 router.route('/:year/:week/items_sold/:id').delete(protect, deleteItemSold)
 
 router.route('/:year/:week/orders_received').get(protect, getOrdersReceived).post(protect,addItemOrdered)
-    .put(protect, editItemOrdered)
+    .put(protect, editItemOrdered).delete(protect, flushItemOrdered)
 router.route('/:year/:week/orders_received/:id').delete(protect, deleteItemOrdered)
 
-router.route('/:week/order').get(protect, getItemToOrder).post(protect,addItemToOrder)
-router.route('/:week/order/:id').put(protect, editItemToOrder).delete(protect,deleteItemToOrder)
+router.route('/:year/:week/order').get(protect, getItemToOrder).post(protect,addItemToOrder)
+    .put(protect, editItemToOrder).delete(protect, flushItemToOrder)
+router.route('/:year/:week/order/:id').delete(protect,deleteItemToOrder)
+
+router.route('/get_all_datas').get(protect, getAllDatasForUser)
+router.route('/get_all_datas/:week/:year').get(protect, getWeeklyDataForUser )
+
+router.route('/:year/:week/finalized').put(protect, setFinalizeTrue)
 
 module.exports = router

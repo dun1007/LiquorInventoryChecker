@@ -2,7 +2,7 @@ import React from 'react'
 
 function Employees() {
   return (
-    <div>Employees</div>
+    <div>This feature is currently in development.</div>
   )
 }
 
