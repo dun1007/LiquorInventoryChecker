@@ -59,7 +59,6 @@ const getItemsSold = asyncHandler(async (req, res) => {
 const addItemSold = asyncHandler(async (req, res) => {
     let weeklyDetails = await WeeklyDetails.find({user: req.user.id, week: req.params.week, year: req.params.year})
     
-		
     if (!weeklyDetails || weeklyDetails.length == 0) {
         res.status(400)
         throw new Error("Weekly data does not exist")
@@ -69,15 +68,13 @@ const addItemSold = asyncHandler(async (req, res) => {
 
     //are we supposed to add batch items?
     if (Array.isArray(req.body)) {
-        req.body.map((item) => {
-            weeklyDetails.itemSold.push(item)
-        })
+        weeklyDetails.itemsSold = weeklyDetails.itemsSold.concat(req.body)
     } else {
         weeklyDetails.itemsSold.push(req.body)
     }
-await weeklyDetails.save()
+    await weeklyDetails.save()
 
-    res.status(200).send(req.body)
+    res.status(200).send("Succesfully added an item to Items Sold")
 })
 
 // @desc    Edit an item from list of items sold for given week
@@ -140,6 +137,23 @@ const deleteItemSold = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error("Tried to delete " + itemId + " but item with this ID does not exist")
     }
+})
+
+// @desc    Delete all items in items sold for given week and ID
+// @route   DELETE /:year/:week/items_sold
+// @access  Private
+const flushItemSold = asyncHandler(async (req, res) => {
+	let weeklyDetails = await WeeklyDetails.find({user: req.user.id, week: req.params.week, year: req.params.year})
+	
+	if (!weeklyDetails || weeklyDetails.length == 0) {
+			res.status(400)
+			throw new Error("Weekly data does not exist")
+	} else {
+			weeklyDetails = weeklyDetails[0]
+	}
+
+	weeklyDetails.itemsSold = []
+	weeklyDetails.save()
 })
 
 // @desc    Get orders received for given week
@@ -417,15 +431,34 @@ const setFinalizeTrue = asyncHandler(async (req, res) => {
 	} else {
         weeklyDetails = weeklyDetails[0]
 	}
-    console.log("wow")
     weeklyDetails.isFinalized = true
     weeklyDetails.save()
     res.status(200).send("Week " + req.parms.week + " is now final")
 })
 
+// @desc    Set up demo account 
+// @route   POST /demo_setup
+// @access  Private
+const setUpDemoData = asyncHandler(async (req, res) => {
+    await WeeklyDetails.deleteMany({user: req.user.id}) //flush first
+    
+    
+    prevWeek = req.body.week-1
+    prevYear = req.body.year
+    console.log(req.body.week + " " + req.body.year)
+    if (req.body.week == 1) {
+        prevWeek = 52
+        prevYear = req.body.year-1
+    } 
+    let weeklyDetailsPrevWeek = await new WeeklyDetails({...req.body, week: prevWeek, year: prevYear}) 
+    let weeklyDetails = await new WeeklyDetails({...req.body, orderReceived: [], orderForNextWeek: []})
+    weeklyDetailsPrevWeek.save()
+    weeklyDetails.save()
+    res.status(200).send("Setup demo data complete")
+})
 
 module.exports = { createWeeklyDetails, getOrderSpans,
-    getItemsSold, addItemSold, editItemSold, deleteItemSold, 
+    getItemsSold, addItemSold, editItemSold, deleteItemSold, flushItemSold,
     getOrdersReceived, addItemOrdered, editItemOrdered, deleteItemOrdered, flushItemOrdered,
     getItemToOrder, addItemToOrder, editItemToOrder, deleteItemToOrder, flushItemToOrder,
-    getAllDatasForUser, getWeeklyDataForUser, setFinalizeTrue }
+    getAllDatasForUser, getWeeklyDataForUser, setFinalizeTrue, setUpDemoData }

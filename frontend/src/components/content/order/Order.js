@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import Axios from 'axios'
-import { Tabs, Tab, Dropdown, DropdownButton, Button, Modal } from 'react-bootstrap';
+import { Tabs, Tab, Dropdown, DropdownButton, Button, Modal, Toast } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ItemsSold from './ItemsSold';
@@ -52,7 +52,11 @@ class OrderClass extends React.Component {
     this.setState({week: week, year: year})
     this.getOrderSpans()
 
-    Axios.post(`http://localhost:5000/api/weekly/create/${year}/${week}`, undefined, this.getAuthHeader()) // Create weekly details for user if it does not have one
+    // Create weekly details for user if it does not have one
+    if (this.state.user && this.state.user.email !== "demo@demo.com") {
+      console.log("Creating new weekly details for " + this.state.user.name + "...")
+      Axios.post(`http://localhost:5000/api/weekly/create/${year}/${week}`, undefined, this.getAuthHeader())
+    }
   }
   
   componentDidUpdate = () => {
@@ -132,17 +136,28 @@ class OrderClass extends React.Component {
 
   toggleWarningModal = () => { this.setState({warningModal: !this.state.warningModal}) }
 
+  toastForDemo = () => {
+    return (
+      <Toast className="m-3">
+        <Toast.Header closeButton={false}>
+          <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
+            <strong className="me-auto">Message from Steve</strong>
+          </a>
+          <small className="ms-auto">Just now</small>
+        </Toast.Header>
+        <Toast.Body>
+          <strong>How's your journey so far? </strong><br />I will walk you through on how to finish order in Just 
+          few clicks. You are on week {this.state.week} of {this.state.year}, and I populated some items in advance 
+          for you. Go ahead and click <strong>[Order Received]</strong> below.
+        </Toast.Body>
+      </Toast>
+    )
+  }
+
   render() {
     return (
       <div>
-        {((this.state.user && this.state.user.name) === "Demo Account") ? <p>I see you are on demo mode. In case you did not read guide yet,
-           here are reminders for some important stuffs in this section.<br /><br />
-          In [Orders Received], be sure that you have something in previous week's [Next Order] if you want to 
-          auto-fill with it.<br /><br /> In [Next Order], remember that it can only suggest an order after populating
-          previous 2 sections.<br /><br /> Feel free to play around with features, and press that Finalize button 
-          when you are done. It will alter your inventory accordingly.
-
-        </p> : <p />}
+        {((this.state.user && this.state.user.name) === "Demo Account") ? this.toastForDemo() : <p />}
         <DropdownButton id="dropdown-basic-button" title="Choose the week to manage" className="m-3">
           {this.state.orderSpans.map((span) => {
             return <Dropdown.Item as="button" key={`span-${span.year}-${span.week}`} onClick={(e)=>{
@@ -174,7 +189,7 @@ class OrderClass extends React.Component {
           </Modal.Header>
 
           <Modal.Body>
-            <p>You are trying to update invetory with weekly details for this week. This cannot be undone.</p>
+            <p>You are trying to update inventory with weekly details for this week. This cannot be undone.</p>
             <h3 className="text-center">Are you sure?</h3>
           </Modal.Body>
             

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, InputGroup, FormControl, Modal, Popover, OverlayTrigger, Tooltip, } from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl, Modal, Popover, OverlayTrigger, Tooltip, Toast } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios'
@@ -163,6 +163,27 @@ export default class OrderReceived extends Component {
     return null
   }
 
+	toastForDemo = () => {
+		return (
+		  <Toast className="m-3">
+			<Toast.Header closeButton={false}>
+			  <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
+				<strong className="me-auto">Message from Steve</strong>
+			  </a>
+			  <small className="ms-auto">Just now</small>
+			</Toast.Header>
+			<Toast.Body>
+			  <strong>Time to make an order for next week!</strong> Click on  
+			  <strong> [Suggest an order]</strong> button, which will auto-fill next order based on previous two 
+				sections and your inventory stock. This sets you up for must-order items, and then you can add/edit few 
+				more items as you desire.<br />
+				That's it for the demo tour. Thanks for following through! If you want to reset database and try other 
+				 stuffs, logout and re-log with demo option which will flush everything and re-populate data for you.
+			</Toast.Body>
+		  </Toast>
+		)
+	}
+
   render() {
 		const popover = (
 			<Popover id="popover-basic">
@@ -190,14 +211,11 @@ export default class OrderReceived extends Component {
 					Add item to next order
 				</Button>
 				<OverlayTrigger placement="bottom" delay={{show:200, hide:200}} overlay={suggestReminder}>
-
 					<Button className="m-3" onClick={this.suggestNextOrder}>
 						Suggest an order
 					</Button>
 				</OverlayTrigger>
-				{/*<Button className="m-3" onClick={this.flushItems}>
-					Flush 
-				</Button>*/}
+				{((this.state.user && this.state.user.name) === "Demo Account") ? this.toastForDemo() : <p />}
 				<Table responsive hover size="sm">
 					<thead>
 						<tr>

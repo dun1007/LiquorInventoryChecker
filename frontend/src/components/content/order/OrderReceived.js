@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, InputGroup, FormControl, Modal, Popover, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl, Modal, Popover, OverlayTrigger, Tooltip, Toast } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios'
@@ -141,7 +141,25 @@ export default class OrderReceived extends Component {
 		})
 	}
 
-  render() {
+	toastForDemo = () => {
+		return (
+		  <Toast className="m-3">
+			<Toast.Header closeButton={false}>
+			  <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
+				<strong className="me-auto">Message from Steve</strong>
+			  </a>
+			  <small className="ms-auto">Just now</small>
+			</Toast.Header>
+			<Toast.Body>
+			  <strong>Uhm... what items did I get for this week's delivery? </strong> No worries, just click on 
+			  <strong> [Auto-fill with last week's order]</strong> button, and that will get the job done for you.
+			  <br /> When you are done, go to <strong>[Next Order]</strong> tab.
+			</Toast.Body>
+		  </Toast>
+		)
+	}
+
+	render() {
 		const popover = (
 			<Popover id="popover-basic">
 				<Popover.Header as="h3">Enter Qty.</Popover.Header>
@@ -173,6 +191,7 @@ export default class OrderReceived extends Component {
 						Auto-fill with last week's order
 					</Button>
 				</OverlayTrigger>
+				{((this.state.user && this.state.user.name) === "Demo Account") ? this.toastForDemo() : <p />}
 				<Table responsive hover size="sm">
 					<thead>
 						<tr>

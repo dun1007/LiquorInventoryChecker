@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Axios from 'axios'
-import { Table, InputGroup, FormControl, Modal, Button} from 'react-bootstrap';
+import { Table, InputGroup, FormControl, Modal, Button, Toast} from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -49,6 +49,7 @@ function Inventory() {
     if (!user) {
       navigate('/login')
     } else {
+      Axios.post("http://localhost:5000/api/inventory/create", null , getAuthHeader())
       getItems()
     }
   }, [user, navigate]);
@@ -90,13 +91,28 @@ function Inventory() {
     });
   }
 
+  const toastForDemo = () => {
+    return (
+      <Toast className="m-3">
+        <Toast.Header closeButton={false}>
+          <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
+            <strong className="me-auto">Message from Steve</strong>
+          </a>
+          <small className="ms-auto">Just now</small>
+        </Toast.Header>
+        <Toast.Body>
+          <strong>Hello, thanks for trying out Stockify!</strong><br />I see you are on Demo Account. Feel free to 
+          fiddle around with items here. Those are randomly generated for demo purpose by the way,
+          so no, we don't sell a bottle of Dom Perignon for $5 :) <br /> Once you are done, please
+          head to <strong>[Manage Order]</strong> to make our first order!
+        </Toast.Body>
+      </Toast>
+    )
+  }
+
   return (
     <div>
-      <h1 className="text-center">Inventory for {user && user.name}</h1>
-      {((user && user.name) === "Demo Account") ? <p>I see you are on demo mode. Items
-        in demo mode are randomly generated and have no relationship with real ones. Although Dom Perignon 
-        costing $5 would be pretty sweet.<br /><br /> Feel free to fiddle around with Add buttons and Filter.
-      </p> : <p />}
+      {((user && user.name) === "Demo Account") ? toastForDemo() : <p />}
       <div>
         <Button onClick={()=> toggleModal("add")} className="mb-3 product-input">
           Add a product

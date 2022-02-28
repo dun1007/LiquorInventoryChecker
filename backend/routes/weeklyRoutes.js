@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const { createWeeklyDetails, getOrderSpans, 
-    getItemsSold, addItemSold, editItemSold, deleteItemSold, 
+    getItemsSold, addItemSold, editItemSold, deleteItemSold, flushItemSold,
     getOrdersReceived, addItemOrdered, editItemOrdered, deleteItemOrdered, flushItemOrdered,
     getItemToOrder, addItemToOrder, editItemToOrder, deleteItemToOrder, flushItemToOrder,
-    getAllDatasForUser, getWeeklyDataForUser, setFinalizeTrue} = require('../controllers/weeklyController')
+    getAllDatasForUser, getWeeklyDataForUser, setFinalizeTrue, setUpDemoData} = require('../controllers/weeklyController')
 
 const { protect } = require('../middleware/authMiddleware')
 
@@ -12,7 +12,7 @@ router.route('/create/:year/:week').post(protect, createWeeklyDetails)
 router.route('/order_spans').get(protect, getOrderSpans)
 
 router.route('/:year/:week/items_sold/').get(protect, getItemsSold).post(protect,addItemSold)
-    .put(protect, editItemSold)
+    .put(protect, editItemSold).delete(protect, flushItemSold)
 router.route('/:year/:week/items_sold/:id').delete(protect, deleteItemSold)
 
 router.route('/:year/:week/orders_received').get(protect, getOrdersReceived).post(protect,addItemOrdered)
@@ -28,4 +28,5 @@ router.route('/get_all_datas/:week/:year').get(protect, getWeeklyDataForUser )
 
 router.route('/:year/:week/finalized').put(protect, setFinalizeTrue)
 
+router.route('/demo_setup').post(protect, setUpDemoData)
 module.exports = router

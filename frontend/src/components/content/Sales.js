@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Axios from 'axios'
 import moment from 'moment'
-import { Tabs, Tab, Dropdown, DropdownButton} from 'react-bootstrap';
+import { Toast } from 'react-bootstrap';
 
 
 // read week spans 
@@ -56,6 +56,7 @@ function Sales() {
       //this is week limited
 		});
   }
+
   const getSalesForEntirePeriod = () => {
     Axios.get(`http://localhost:5000/api/weekly/get_all_datas`, getAuthHeader()).then((response) => {
       const data = []
@@ -83,7 +84,6 @@ function Sales() {
     }
   }
   
-
   const getCurrentWeek = () => {
     var currentdate = new Date();
     var oneJan = new Date(currentdate.getFullYear(),0,1);
@@ -92,12 +92,26 @@ function Sales() {
     return result
   }
 
+  const toastForDemo = () => {
+    return (
+      <Toast className="m-3">
+        <Toast.Header closeButton={false}>
+          <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
+            <strong className="me-auto">Message from Steve</strong>
+          </a>
+          <small className="ms-auto">Just now</small>
+        </Toast.Header>
+        <Toast.Body>
+          Hello Demo Account, this is where you can view monthly revenue graph in one view. You can use 
+          this visual data to strategize your next order.
+        </Toast.Body>
+      </Toast>
+    )
+  }
+
   return (
     <div>
-
-      {((user && user.name) === "Demo Account") ? <p>I see you are on demo mode. Here you can view your monthly revenue 
-        chart.
-      </p> : <p />}
+      {((user && user.name) === "Demo Account") ? toastForDemo() : <p />}
       <h1 className="text-center">Revenue Chart for {user && user.name}</h1>
       <ResponsiveContainer width={"99%"} height={300}>
         <LineChart width={730} height={250} data={chartData}

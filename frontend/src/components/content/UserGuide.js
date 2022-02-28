@@ -18,10 +18,11 @@ function UserGuide() {
   }, [user]);
 
   const populateWeeklyOrderForDemoAcc = async (inventory) => {
+    const date = new Date();
     const weeklyDetails = {
       user: user._id,
-      year: 0,
-      week: 0,  //get year and week
+      year: date.getFullYear(),
+      week: getCurrentWeek(),  //get year and week
       isFinalized: false,
       itemsSold: [],
       orderReceived: [],
@@ -31,40 +32,37 @@ function UserGuide() {
       
       if (Math.random() > 0.5) {
         const originalQuantity = item.quantity
-        item.quantity = Math.round(randomIntFromInterval(0, originalQuantity/2))
+        item.quantity = Math.round(randomIntFromInterval(1, originalQuantity))
         weeklyDetails.itemsSold.push(item)
       }
 
       if (Math.random() > 0.5) {
         const originalQuantity = item.quantity
-        item.quantity = Math.round(randomIntFromInterval(0, originalQuantity/2))
+        item.quantity = Math.round(randomIntFromInterval(1, originalQuantity))
         weeklyDetails.orderReceived.push(item)
       }
 
       if (Math.random() > 0.5) {
         const originalQuantity = item.quantity
-        item.quantity = Math.round(randomIntFromInterval(0, originalQuantity/2))
+        item.quantity = Math.round(randomIntFromInterval(1, originalQuantity))
         weeklyDetails.orderForNextWeek.push(item)
       }
     })
-    console.log(weeklyDetails)
-
-  }
-
-
-  const randomIntFromInterval = (min, max) => { 
-    return Math.floor(Math.random() * (max - min + 1) + min)
+    // Flush all 3 arrays and populate them with random datas
+     Axios.post(`http://localhost:5000/api/weekly/demo_setup`, 
+      weeklyDetails, getAuthHeader()).then((response) => {
+    })
   }
 
   const populateInventoryForDemoAcc = async () => {
     const inventory = addRandomItem()
+    await Axios.post("http://localhost:5000/api/inventory/demo_setup", null , getAuthHeader())
     await Axios.put(`http://localhost:5000/api/inventory/all`, inventory, getAuthHeader()).then((response) => {
       populateWeeklyOrderForDemoAcc(response.data)
     })
   } 
 
-  const getAuthHeader = () => { return {headers: { authorization: `Bearer ${user.token}`}} }
-
+  //Below are utility functions
   const addRandomItem = () => {
     const randomName = ["Budweiser", "Bud Light", "Busch", "Coors", "Kokanee", "Coors Light", "Guiness",
     "Captain Morgan", "Bacardi", "Smirnoff", "Absolut", "Kahlua", "Carolans",
@@ -91,6 +89,20 @@ function UserGuide() {
       newInventory.push(randomItem)
     }
     return newInventory
+  }
+
+  const getAuthHeader = () => { return {headers: { authorization: `Bearer ${user.token}`}} }
+
+  const randomIntFromInterval = (min, max) => { 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
+  const getCurrentWeek = () => {
+    var currentdate = new Date();
+    var oneJan = new Date(currentdate.getFullYear(),0,1);
+    var numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
+    var result = Math.ceil(( currentdate.getDay() + 1 + numberOfDays) / 7);
+    return result
   }
 
   return (
