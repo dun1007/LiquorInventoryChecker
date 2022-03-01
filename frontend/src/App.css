@@ -15,6 +15,13 @@ body {
   background-color: #f5f9fc;
 }
 
+h1 {
+  font-family: 'Arial Black', sans-serif;
+}
+
+h4 {
+  font-family: 'Times New Roman', serif;
+}
 
 a,
 a:hover,
@@ -179,6 +186,45 @@ li a.dropdown-toggle::after {
   margin-top: -125px;
   margin-left: -25px;
 }
+
+.glow-effect-msg {
+  animation: glowing-lb 3000ms infinite;
+}
+
+@keyframes glowing-lb {
+  0% {
+    background-color: #C1F7FC;
+    box-shadow: 0 0 3px #C1F7FC;
+  }
+  50% {
+    background-color: #F5F9FC;
+    box-shadow: 0 0 50px #F5F9FC;
+  }
+  100% {
+    background-color: #C1F7FC;
+    box-shadow: 0 0 3px #C1F7FC;
+  }
+}
+
+.glow-effect-msg-green {
+  animation: glowing-green 3000ms infinite;
+}
+
+@keyframes glowing-green {
+  0% {
+    background-color: #b2ff99;
+    box-shadow: 0 0 3px #b2ff99;
+  }
+  50% {
+    background-color: #F5F9FC;
+    box-shadow: 0 0 50px #F5F9FC;
+  }
+  100% {
+    background-color: #b2ff99;
+    box-shadow: 0 0 3px #b2ff99;
+  }
+}
+
 @media only screen and (max-width: 575.98px) {
   .content.is-open {
     /*margin-left: 100%;*/

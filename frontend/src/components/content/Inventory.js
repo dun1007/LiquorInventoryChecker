@@ -93,7 +93,7 @@ function Inventory() {
 
   const toastForDemo = () => {
     return (
-      <Toast className="m-3">
+      <Toast className="m-3 glow-effect-msg">
         <Toast.Header closeButton={false}>
           <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
             <strong className="me-auto">Message from Steve</strong>
@@ -101,10 +101,10 @@ function Inventory() {
           <small className="ms-auto">Just now</small>
         </Toast.Header>
         <Toast.Body>
-          <strong>Hello, thanks for trying out Stockify!</strong><br />I see you are on Demo Account. Feel free to 
-          fiddle around with items here. Those are randomly generated for demo purpose by the way,
-          so no, we don't sell a bottle of Dom Perignon for $5 :) <br /> Once you are done, please
-          head to <strong>[Manage Order]</strong> to make our first order!
+          I put some items in your inventory for you. Feel free to 
+          fiddle around with them. Those are randomly generated for demo purpose by the way,
+          so no, you wouldn't sell a bottle of Dom Perignon for $5 :) <br /> Once you are done, please
+          head to <strong>[Manage Order]</strong> to make your first order.
         </Toast.Body>
       </Toast>
     )

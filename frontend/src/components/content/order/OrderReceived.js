@@ -143,7 +143,7 @@ export default class OrderReceived extends Component {
 
 	toastForDemo = () => {
 		return (
-		  <Toast className="m-3">
+		  <Toast className="m-3 glow-effect-msg-green">
 			<Toast.Header closeButton={false}>
 			  <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
 				<strong className="me-auto">Message from Steve</strong>
@@ -151,9 +151,9 @@ export default class OrderReceived extends Component {
 			  <small className="ms-auto">Just now</small>
 			</Toast.Header>
 			<Toast.Body>
-			  <strong>Uhm... what items did I get for this week's delivery? </strong> No worries, just click on 
-			  <strong> [Auto-fill with last week's order]</strong> button, and that will get the job done for you.
-			  <br /> When you are done, go to <strong>[Next Order]</strong> tab.
+			  Didn't record your delivery? No worries, just click on <strong>[Auto-fill with last week's order]</strong> button, 
+			  and that will get the job done for you.
+			  <br /> When you are done, go to next step, <strong>[Next Order]</strong> tab.
 			</Toast.Body>
 		  </Toast>
 		)

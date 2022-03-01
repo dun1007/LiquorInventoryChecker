@@ -94,7 +94,7 @@ function Sales() {
 
   const toastForDemo = () => {
     return (
-      <Toast className="m-3">
+      <Toast className="m-3 glow-effect-msg">
         <Toast.Header closeButton={false}>
           <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
             <strong className="me-auto">Message from Steve</strong>
@@ -102,8 +102,8 @@ function Sales() {
           <small className="ms-auto">Just now</small>
         </Toast.Header>
         <Toast.Body>
-          Hello Demo Account, this is where you can view monthly revenue graph in one view. You can use 
-          this visual data to strategize your next order.
+          Hello Demo Account, this is where you can observe the landscape of your business in one view. You can use 
+          this visual data to strategize your next order or marketing direction.
         </Toast.Body>
       </Toast>
     )

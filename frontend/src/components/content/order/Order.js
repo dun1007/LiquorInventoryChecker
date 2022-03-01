@@ -138,7 +138,7 @@ class OrderClass extends React.Component {
 
   toastForDemo = () => {
     return (
-      <Toast className="m-3">
+      <Toast className="m-3 glow-effect-msg">
         <Toast.Header closeButton={false}>
           <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
             <strong className="me-auto">Message from Steve</strong>
@@ -147,8 +147,8 @@ class OrderClass extends React.Component {
         </Toast.Header>
         <Toast.Body>
           <strong>How's your journey so far? </strong><br />I will walk you through on how to finish order in Just 
-          few clicks. You are on week {this.state.week} of {this.state.year}, and I populated some items in advance 
-          for you. Go ahead and click <strong>[Order Received]</strong> below.
+          few clicks. You are on week {this.state.week} of {this.state.year}, and I filled <strong>[Items Sold]</strong> for you in advance. 
+          Go ahead and click <strong>[Order Received]</strong> below for next step.
         </Toast.Body>
       </Toast>
     )
@@ -179,7 +179,7 @@ class OrderClass extends React.Component {
           </Tab>
         </Tabs>
 
-				<Button className="mt-5 ms-3 btn-lg btn-success" onClick={this.toggleWarningModal}>
+				<Button className="mt-5 ms-3 mb-5 btn-lg btn-success" onClick={this.toggleWarningModal}>
 					Finalize Order for This Week
 				</Button>
         

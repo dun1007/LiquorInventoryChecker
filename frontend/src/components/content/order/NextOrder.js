@@ -165,7 +165,7 @@ export default class OrderReceived extends Component {
 
 	toastForDemo = () => {
 		return (
-		  <Toast className="m-3">
+		  <Toast className="m-3 glow-effect-msg-green">
 			<Toast.Header closeButton={false}>
 			  <a href="https://github.com/dun1007/Stockify-Inventory-Manager" rel="noreferrer" target="_blank">
 				<strong className="me-auto">Message from Steve</strong>
@@ -176,7 +176,8 @@ export default class OrderReceived extends Component {
 			  <strong>Time to make an order for next week!</strong> Click on  
 			  <strong> [Suggest an order]</strong> button, which will auto-fill next order based on previous two 
 				sections and your inventory stock. This sets you up for must-order items, and then you can add/edit few 
-				more items as you desire.<br />
+				more items as you desire. When you are done, <strong>[Finalize Order for This Week]</strong> and reflect your weekly flow of items 
+				on your inventory.<br /><br />
 				That's it for the demo tour. Thanks for following through! If you want to reset database and try other 
 				 stuffs, logout and re-log with demo option which will flush everything and re-populate data for you.
 			</Toast.Body>
