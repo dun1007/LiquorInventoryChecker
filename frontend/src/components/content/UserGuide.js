@@ -49,15 +49,15 @@ function UserGuide() {
       }
     })
     // Flush all 3 arrays and populate them with random datas
-     Axios.post(`http://localhost:5000/api/weekly/demo_setup`, 
+     Axios.post(`/api/weekly/demo_setup`, 
       weeklyDetails, getAuthHeader()).then((response) => {
     })
   }
 
   const populateInventoryForDemoAcc = async () => {
     const inventory = addRandomItem()
-    await Axios.post("http://localhost:5000/api/inventory/demo_setup", null , getAuthHeader())
-    await Axios.put(`http://localhost:5000/api/inventory/all`, inventory, getAuthHeader()).then((response) => {
+    await Axios.post("/api/inventory/demo_setup", null , getAuthHeader())
+    await Axios.put(`/api/inventory/all`, inventory, getAuthHeader()).then((response) => {
       populateWeeklyOrderForDemoAcc(response.data)
     })
   } 

@@ -32,8 +32,8 @@ if (process.env.NODE_ENV === 'production') {
   } else {
     app.get('/', (req, res) => res.send('Please set to production'))
   }
-app.use(errorHandler)
+  app.use(errorHandler)
 
-app.listen(port, () => {
-    console.log(`Server up on ${port}`)
+  app.listen(port, () => {
+  console.log(`Server up on ${port}`)
 })
