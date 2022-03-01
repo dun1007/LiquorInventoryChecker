@@ -49,7 +49,7 @@ function Inventory() {
     if (!user) {
       navigate('/login')
     } else {
-      Axios.post("http://localhost:5000/api/inventory/create", null , getAuthHeader())
+      Axios.post("/api/inventory/create", null , getAuthHeader())
       getItems()
     }
   }, [user, navigate]);
@@ -57,18 +57,18 @@ function Inventory() {
   const getAuthHeader = () => { return {headers: { authorization: `Bearer ${user.token}`}} }
 
   const getItems = () => {
-    Axios.get("http://localhost:5000/api/inventory", getAuthHeader()).then((response) => {
+    Axios.get("/api/inventory", getAuthHeader()).then((response) => {
       setListOfItems(response.data);
     });
   }
   const addItem = () => {
-    Axios.post("http://localhost:5000/api/inventory", item, getAuthHeader()).then((response) => {
+    Axios.post("/api/inventory", item, getAuthHeader()).then((response) => {
       getItems()
     })
   }
 
   const editItem = () => {
-    Axios.put(`http://localhost:5000/api/inventory/${currentItemID}`, item, getAuthHeader()).then((response) => {
+    Axios.put(`/api/inventory/${currentItemID}`, item, getAuthHeader()).then((response) => {
       let items = [...listOfItems]
       for (let i = 0; i < items.length; i++ ) {
         if (items[i]._id === item._id) {
@@ -81,12 +81,12 @@ function Inventory() {
   }
 
   const deleteItem = () => {
-    Axios.delete(`http://localhost:5000/api/inventory/${currentItemID}`, getAuthHeader()).then((response) => {getItems()})
+    Axios.delete(`/api/inventory/${currentItemID}`, getAuthHeader()).then((response) => {getItems()})
     
   }
 
   const filterItemList = (value) => {
-    Axios.get("http://localhost:5000/api/inventory", getAuthHeader()).then((response) => {
+    Axios.get("/api/inventory", getAuthHeader()).then((response) => {
       setListOfItems(response.data.filter(item => item.name.includes(value)));
     });
   }

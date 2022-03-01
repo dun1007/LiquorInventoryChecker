@@ -56,33 +56,6 @@ class SubMenu extends React.Component {
         </Accordion>
       </Nav.Item>
     );
-
-    // return (
-    //   <div>
-    //     <NavItem
-    //       onClick={this.toggleNavbar}
-    //       className={classNames({ "menu-open": !this.state.collapsed })}
-    //     >
-    //       <NavLink className="dropdown-toggle" href="#">
-    //         <FontAwesomeIcon icon={icon} className="mr-2" />
-    //         {title}
-    //       </NavLink>
-    //     </NavItem>
-    //     <Collapse
-    //       isOpen={!this.state.collapsed}
-    //       navbar
-    //       className={classNames("items-menu", {
-    //         "mb-1": !this.state.collapsed
-    //       })}
-    //     >
-    //       {items.map(item => (
-    //         <NavItem key={item} className="pl-4">
-    //           <NavLink>{item}</NavLink>
-    //         </NavItem>
-    //       ))}
-    //     </Collapse>
-    //   </div>
-    // );
   }
 }
 

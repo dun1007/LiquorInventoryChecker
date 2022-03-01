@@ -22,7 +22,7 @@ function Sales() {
       navigate('/login')
     }
     // Fetch week spans
-    Axios.get(`http://localhost:5000/api/weekly/order_spans`, getAuthHeader()).then((response) => {
+    Axios.get(`/api/weekly/order_spans`, getAuthHeader()).then((response) => {
       const newWeekSpans = []
       response.data.map((weekYear) => {
         let monday = moment().year(weekYear.year).week(weekYear.week).day("Monday")
@@ -52,13 +52,13 @@ function Sales() {
   const getAuthHeader = () => { return {headers: { authorization: `Bearer ${user && user.token}`}} }
 
   const getSalesForWeekSpan = (year, week) => { 
-    Axios.get(`http://localhost:5000/api/weekly/${year}/${week}/items_sold`, getAuthHeader()).then((response) => {
+    Axios.get(`/api/weekly/${year}/${week}/items_sold`, getAuthHeader()).then((response) => {
       //this is week limited
 		});
   }
 
   const getSalesForEntirePeriod = () => {
-    Axios.get(`http://localhost:5000/api/weekly/get_all_datas`, getAuthHeader()).then((response) => {
+    Axios.get(`/api/weekly/get_all_datas`, getAuthHeader()).then((response) => {
       const data = []
       response.data.map((weeklyData) => {
         const chartProps = {
@@ -128,15 +128,6 @@ function Sales() {
           <Line type="monotone" dataKey="Liquor" stroke="#EB05FE" />
         </LineChart>
       </ResponsiveContainer>
-
-      {/*<DropdownButton id="dropdown-basic-button" title="Choose to display weekly details">
-        {weekSpans.map((span) => {
-          return <Dropdown.Item as="button" key={`span-${span.year}-${span.week}`} onClick={(e)=>{
-            setWeekAndYear(span.week, span.year);
-          }}>{span.string}</Dropdown.Item>
-        })
-        }
-      </DropdownButton>*/}
     </div>
   )
 }

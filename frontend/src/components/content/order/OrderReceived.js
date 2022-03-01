@@ -68,7 +68,7 @@ export default class OrderReceived extends Component {
 	}
 
 	editItemQuantity = () => {
-		Axios.put(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.state.item, this.getAuthHeader())
+		Axios.put(`/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.state.item, this.getAuthHeader())
 	  .then(() => {
 			this.getItemsReceived()
 		})
@@ -83,37 +83,37 @@ export default class OrderReceived extends Component {
 		})
 
 		isDuplicate ? this.editItemQuantity() :
-			Axios.post(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.state.item, this.getAuthHeader()).then(() => {
+			Axios.post(`/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.state.item, this.getAuthHeader()).then(() => {
 				this.getItemsReceived()
 		})
 	}
 
 	addBatchItems = (items) => {
-		Axios.post(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/orders_received`, items, this.getAuthHeader()).then(() => {
+		Axios.post(`/api/weekly/${this.state.year}/${this.state.week}/orders_received`, items, this.getAuthHeader()).then(() => {
 			this.getItemsReceived()
 		})
 	}
 
 	getItemsReceived = () => {
-		Axios.get(`http://localhost:5000/api/weekly/${this.props.year}/${this.props.week}/orders_received`, this.getAuthHeader()).then((response) => {
+		Axios.get(`/api/weekly/${this.props.year}/${this.props.week}/orders_received`, this.getAuthHeader()).then((response) => {
 			this.setState({listOfItemsReceived: response.data})
 		})
 	}
 
 	getProductToReceive = () => {
-		Axios.get("http://localhost:5000/api/inventory", this.getAuthHeader(this.state.user)).then((response) => {
+		Axios.get("/api/inventory", this.getAuthHeader(this.state.user)).then((response) => {
 			this.setState({ listOfItems: response.data })
 		})
 	}
 
 	deleteItem = (itemID) => {
-		Axios.delete(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/orders_received/${itemID}`, this.getAuthHeader()).then((response) => {
+		Axios.delete(`/api/weekly/${this.state.year}/${this.state.week}/orders_received/${itemID}`, this.getAuthHeader()).then((response) => {
 			this.getItemsReceived()
 		})
 	}
 
 	filterAddProductList = (value) => {
-		Axios.get("http://localhost:5000/api/inventory", this.getAuthHeader()).then((response) => {
+		Axios.get("/api/inventory", this.getAuthHeader()).then((response) => {
 			this.setState({listOfItems: response.data.filter(item => item.name.includes(value))})
 		});
 	}
@@ -128,14 +128,14 @@ export default class OrderReceived extends Component {
 			year = this.state.year
 		}
 		console.log("looking for " + week + " " + year)
-		Axios.get(`http://localhost:5000/api/weekly/${year}/${week}/order`, this.getAuthHeader())
+		Axios.get(`/api/weekly/${year}/${week}/order`, this.getAuthHeader())
 			.catch((err) => {
 			this.toggleWarningModal()
 			throw err
 		}).then((response) => {
 			(response.data.length == 0) ? this.toggleWarningModal() :
 				//Flush list and add data from last week
-				Axios.delete(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.getAuthHeader())
+				Axios.delete(`/api/weekly/${this.state.year}/${this.state.week}/orders_received`, this.getAuthHeader())
 				this.setState({listOfItemsReceived: response.data})
 				this.addBatchItems(response.data)
 		})

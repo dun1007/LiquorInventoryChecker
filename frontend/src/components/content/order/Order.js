@@ -55,7 +55,7 @@ class OrderClass extends React.Component {
     // Create weekly details for user if it does not have one
     if (this.state.user && this.state.user.email !== "demo@demo.com") {
       console.log("Creating new weekly details for " + this.state.user.name + "...")
-      Axios.post(`http://localhost:5000/api/weekly/create/${year}/${week}`, undefined, this.getAuthHeader())
+      Axios.post(`/api/weekly/create/${year}/${week}`, undefined, this.getAuthHeader())
     }
   }
   
@@ -73,7 +73,7 @@ class OrderClass extends React.Component {
   getAuthHeader = () => { return {headers: { authorization: `Bearer ${this.state.user && this.state.user.token}`}} }
 
   getOrderSpans = () => {
-		Axios.get(`http://localhost:5000/api/weekly/order_spans`, this.getAuthHeader()).then((response) => {
+		Axios.get(`/api/weekly/order_spans`, this.getAuthHeader()).then((response) => {
       const newOrderSpans = []
       response.data.map((weekYear) => {
         let monday = moment().year(weekYear.year).week(weekYear.week).day("Monday")
@@ -98,9 +98,9 @@ class OrderClass extends React.Component {
     //read quantity of each items from itemsSold, orderReceived, orderForNextWeek
     //new inventory quantity = inventory - itemsSold + ordersReceived + ordersForNextWeek
     //set inventory quantity for each items
-    const weeklyData = await Axios.get(`http://localhost:5000/api/weekly/get_all_datas/${this.state.week}/${this.state.year}`, 
+    const weeklyData = await Axios.get(`/api/weekly/get_all_datas/${this.state.week}/${this.state.year}`, 
       this.getAuthHeader()).then((response) => {return response.data[0]})
-    const inventory = await Axios.get("http://localhost:5000/api/inventory", this.getAuthHeader())
+    const inventory = await Axios.get("/api/inventory", this.getAuthHeader())
       .then((response) => {return response.data})
     const itemsSold = weeklyData.itemsSold
     const orderReceived = weeklyData.orderReceived
@@ -120,8 +120,8 @@ class OrderClass extends React.Component {
         //console.log("Name: " + item.name + ", IS:" + quantityIS + ", OR:" + quantityOR + ", NO:" + quantityNO )
         newInventory.push(item)
       })
-      Axios.put("http://localhost:5000/api/inventory/all", newInventory, this.getAuthHeader())
-      Axios.put(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/finalized`, null, this.getAuthHeader())  
+      Axios.put("/api/inventory/all", newInventory, this.getAuthHeader())
+      Axios.put(`/api/weekly/${this.state.year}/${this.state.week}/finalized`, null, this.getAuthHeader())  
     }
   }
 

@@ -71,7 +71,7 @@ export default class ItemsSold extends Component {
 	}
 
 	editItemQuantity = () => {
-		Axios.put(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/items_sold`, this.state.item, this.getAuthHeader()).then(() => {
+		Axios.put(`/api/weekly/${this.state.year}/${this.state.week}/items_sold`, this.state.item, this.getAuthHeader()).then(() => {
 			this.getItemsSold()
 		})
 	}
@@ -85,31 +85,31 @@ export default class ItemsSold extends Component {
 		})
 
 		isDuplicate ? this.editItemQuantity() :
-			Axios.post(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/items_sold`, this.state.item, this.getAuthHeader()).then(() => {
+			Axios.post(`/api/weekly/${this.state.year}/${this.state.week}/items_sold`, this.state.item, this.getAuthHeader()).then(() => {
 				this.getItemsSold()
 		})
 	}
 
 	getItemsSold = () => {
-		Axios.get(`http://localhost:5000/api/weekly/${this.props.year}/${this.props.week}/items_sold`, this.getAuthHeader()).then((response) => {
+		Axios.get(`/api/weekly/${this.props.year}/${this.props.week}/items_sold`, this.getAuthHeader()).then((response) => {
 			this.setState({listOfItemsAdded: response.data})
 		});
 	}
 
 	getProductToAdd = () => {
-		Axios.get("http://localhost:5000/api/inventory", this.getAuthHeader(this.state.user)).then((response) => {
+		Axios.get("/api/inventory", this.getAuthHeader(this.state.user)).then((response) => {
 			this.setState({ listOfItems: response.data })
 		});
 	}
 
 	deleteItem = (itemID) => {
-		Axios.delete(`http://localhost:5000/api/weekly/${this.state.year}/${this.state.week}/items_sold/${itemID}`, this.getAuthHeader()).then((response) => {
+		Axios.delete(`/api/weekly/${this.state.year}/${this.state.week}/items_sold/${itemID}`, this.getAuthHeader()).then((response) => {
 			this.getItemsSold()
 		})
 	}
 
 	filterAddProductList = (value) => {
-		Axios.get("http://localhost:5000/api/inventory", this.getAuthHeader()).then((response) => {
+		Axios.get("/api/inventory", this.getAuthHeader()).then((response) => {
 			this.setState({listOfItems: response.data.filter(item => item.name.includes(value))})
 		});
 	}
