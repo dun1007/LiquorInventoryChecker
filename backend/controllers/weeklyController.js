@@ -437,21 +437,25 @@ const setFinalizeTrue = asyncHandler(async (req, res) => {
 // @route   POST /demo_setup
 // @access  Private
 const setUpDemoData = asyncHandler(async (req, res) => {
+    console.log("Setting up demo weekly details")
     await WeeklyDetails.deleteMany({user: req.user.id}) //flush first
-    
-    
-    prevWeek = req.body.week-1
-    prevYear = req.body.year
-    console.log(req.body.week + " " + req.body.year)
-    if (req.body.week == 1) {
-        prevWeek = 52
-        prevYear = req.body.year-1
-    } 
-    let weeklyDetailsPrevWeek = await new WeeklyDetails({...req.body, week: prevWeek, year: prevYear}) 
-    let weeklyDetails = await new WeeklyDetails({...req.body, orderReceived: [], orderForNextWeek: []})
-    weeklyDetailsPrevWeek.save()
-    weeklyDetails.save()
-    res.status(200).send("Setup demo data complete")
+    console.log("Deleted previous instances of weekly details")
+    try {
+        prevWeek = req.body.week-1
+        prevYear = req.body.year
+        console.log(req.body.week + " " + req.body.year)
+        if (req.body.week == 1) {
+            prevWeek = 52
+            prevYear = req.body.year-1
+        } 
+        let weeklyDetailsPrevWeek = new WeeklyDetails({...req.body, week: prevWeek, year: prevYear}) 
+        let weeklyDetails = new WeeklyDetails({...req.body, orderReceived: [], orderForNextWeek: []})
+        weeklyDetailsPrevWeek.save()
+        weeklyDetails.save()
+        res.status(200).send("Setup demo data complete")
+    } catch (e) {
+        throw e
+    }
 })
 
 module.exports = { createWeeklyDetails, getOrderSpans,

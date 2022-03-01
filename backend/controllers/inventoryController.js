@@ -7,11 +7,18 @@ const asyncHandler = require('express-async-handler')
 // @route   POST /api/inventory/demo_setup
 // @access  Private
 const setUpDemoData = asyncHandler(async (req, res) => {
+    console.log("Setting up demo inventory")
     await Inventory.deleteMany({user: req.user.id})
-    let inventory = await new Inventory({user:req.user.id, })  
-    inventory.save()
+    console.log("Removed previous instances of inventory")
+    try {
+        let inventory = new Inventory({user:req.user.id, })  
+        inventory.save()
+    } catch (e) {
+        throw e
+    }
     res.status(200).send("Setup demo data complete")
 })
+
 
 // @desc    Create inventory for user for first time
 // @route   POST /api/inventory/create
