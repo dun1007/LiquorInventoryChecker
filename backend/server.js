@@ -13,12 +13,12 @@ connectDB()
 app.use(express.json());
 app.use(cors());
 
-
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/inventory', require('./routes/inventoryRoutes'))
 app.use('/api/weekly', require('./routes/weeklyRoutes'))
 
 mongoose.connect( process.env.MONGODB_URI, { useNewUrlParser: true })
+  .catch(error => handleError(error));
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
