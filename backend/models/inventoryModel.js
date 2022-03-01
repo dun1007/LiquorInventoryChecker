@@ -49,22 +49,3 @@ const InventorySchema = new mongoose.Schema(
 
 const Inventory = mongoose.model('inventory', InventorySchema)
 module.exports = Inventory
-
-        /*items: [
-            {
-                refId: {type: mongoose.Schema.Types.ObjectId, ref: 'Item', unique: true,},
-                quantity: {type: Number,}
-            }*/
-/*
-        items:[
-            {
-                id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                },
-                name: String,
-                quantity: {
-                    type: Number,
-                }
-            }
-        ]
-        */

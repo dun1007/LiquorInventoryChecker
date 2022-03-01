@@ -18,10 +18,7 @@ app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/inventory', require('./routes/inventoryRoutes'))
 app.use('/api/weekly', require('./routes/weeklyRoutes'))
 
-mongoose
-     .connect( process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
-     .then(() => console.log( 'Database Connected' ))
-     .catch(err => console.log( err ));
+mongoose.connect( process.env.MONGODB_URI, { useNewUrlParser: true })
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
