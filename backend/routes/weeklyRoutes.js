@@ -29,4 +29,5 @@ router.route('/get_all_datas/:week/:year').get(protect, getWeeklyDataForUser )
 router.route('/:year/:week/finalized').put(protect, setFinalizeTrue)
 
 router.route('/demo_setup').post(protect, setUpDemoData)
+
 module.exports = router

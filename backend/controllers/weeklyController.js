@@ -1,7 +1,4 @@
 const WeeklyDetails = require('../models/weeklyModel')
-const Inventory = require('../models/inventoryModel')
-const Item = require('../models/itemModel')
-const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
 // @desc    Create new weekly details for user if it does not have one

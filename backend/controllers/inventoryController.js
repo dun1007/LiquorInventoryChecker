@@ -1,6 +1,4 @@
 const Inventory = require('../models/inventoryModel')
-const Item = require('../models/itemModel')
-const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler')
 
 
