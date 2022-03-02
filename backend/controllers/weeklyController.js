@@ -440,24 +440,49 @@ const setUpDemoData = asyncHandler(async (req, res) => {
     console.log("Setting up demo weekly details")
     await WeeklyDetails.deleteMany({user: req.user.id}) //flush first
     console.log("Deleted previous instances of weekly details")
+    let newYearAndWeek = getPrevYearAndYear(req.body.week, req.body.year)
+
     try {
-        prevWeek = req.body.week-1
-        prevYear = req.body.year
-        console.log(req.body.week + " " + req.body.year)
-        if (req.body.week == 1) {
-            prevWeek = 52
-            prevYear = req.body.year-1
-        } 
-        let weeklyDetailsPrevWeek = new WeeklyDetails({...req.body, week: prevWeek, year: prevYear}) 
-        let weeklyDetails = new WeeklyDetails({...req.body, orderReceived: [], orderForNextWeek: []})
-        weeklyDetailsPrevWeek.save()
-        weeklyDetails.save()
+        let latestWeeklyDetails = await new WeeklyDetails({...req.body, orderReceived: [], orderForNextWeek: []})
+        console.log("Created weekly details for " + latestWeeklyDetails.week)
+        await latestWeeklyDetails.save()
+        for (let i=0; i<5; i++) {
+            let weeklyDetails = await new WeeklyDetails({
+                ...req.body,
+                week: newYearAndWeek.week, 
+                year: newYearAndWeek.year,
+                itemsSold: randomizeQuantity(req.body.itemsSold),
+                orderReceived: randomizeQuantity(req.body.orderReceived),
+                orderForNextWeek: randomizeQuantity(req.body.orderForNextWeek),                
+            })
+            await weeklyDetails.save()
+            console.log("Created weekly details for " + weeklyDetails.week)
+            newYearAndWeek = getPrevYearAndYear(newYearAndWeek.week, newYearAndWeek.year)
+        }
+
         res.status(200).send("Setup demo data complete")
     } catch (e) {
         throw e
     }
 })
 
+// Helper functions
+const getPrevYearAndYear = (week, year) => {
+    return week == 1 ? { week: 52, year: year-1} : { week: week-1, year: year}
+}
+
+const randomIntFromInterval = (min, max) => { 
+    return Math.ceil(Math.random() * (max - min + 1) + min)
+}
+
+const randomizeQuantity = (items) => {
+    return items.map((item) => {
+        return {
+            ...item,
+            quantity: randomIntFromInterval(1, item.quantity)
+        }
+    })
+}
 module.exports = { createWeeklyDetails, getOrderSpans,
     getItemsSold, addItemSold, editItemSold, deleteItemSold, flushItemSold,
     getOrdersReceived, addItemOrdered, editItemOrdered, deleteItemOrdered, flushItemOrdered,

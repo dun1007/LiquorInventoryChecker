@@ -38,7 +38,7 @@ function UserGuide() {
 
       if (Math.random() > 0.5) {
         const originalQuantity = item.quantity
-        item.quantity = Math.round(randomIntFromInterval(1, originalQuantity))
+        item.quantity = Math.round(randomIntFromInterval(1, originalQuantity/2))
         weeklyDetails.orderReceived.push(item)
       }
 

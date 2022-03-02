@@ -71,6 +71,7 @@ function Sales() {
         }
         data.push(chartProps)
       })
+      console.log(data.reverse())
       setChartData(data)
 		});
   }
@@ -113,6 +114,7 @@ function Sales() {
     <div>
       {((user && user.name) === "Demo Account") ? toastForDemo() : <p />}
       <h1 className="text-center">Revenue Chart for {user && user.name}</h1>
+      <h4 className="text-center">Unit: $</h4>
       <ResponsiveContainer width={"99%"} height={300}>
         <LineChart width={730} height={250} data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
